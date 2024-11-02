@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
 import 'package:travel_guide_app/presentation/screens/FavoriteDestinations/favorite_destinations_page.dart';
 import 'package:travel_guide_app/presentation/screens/Home/home.dart';
-import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_restaurant.dart';
+import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
+import 'package:travel_guide_app/presentation/screens/News/news_page.dart';
 import 'package:travel_guide_app/presentation/screens/Profile/user_profile.dart';
 import 'package:travel_guide_app/presentation/screens/Search/search_page.dart';
 import '../components/custom_navigation_bar.dart';
@@ -14,9 +15,8 @@ class PageWrapper extends StatelessWidget {
   final NavigationController _navigationController = Get.put(NavigationController());
   final List<Widget> pages = [
     Home(),
-    SearchPage(),
     FavoriteDestinationsPage(),
-    HotelRestaurant(),
+    NewsPage(),
     UserProfile()
   ];
   final _inactiveColor = Colors.grey;
@@ -48,13 +48,6 @@ class PageWrapper extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             BottomNavyBarItem(
-              icon: Icon(Icons.search),
-              title: Text('Search'),
-              activeColor: Colors.blue,
-              inactiveColor: _inactiveColor,
-              textAlign: TextAlign.center,
-            ),
-            BottomNavyBarItem(
               icon: Icon(Icons.favorite),
               title: Text(
                 'Favorite',
@@ -64,8 +57,8 @@ class PageWrapper extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             BottomNavyBarItem(
-              icon: Icon(Icons.hotel),
-              title: Text('Hotels'),
+              icon: Icon(Icons.newspaper_outlined),
+              title: Text('News'),
               activeColor: Colors.blue,
               inactiveColor: _inactiveColor,
               textAlign: TextAlign.center,
