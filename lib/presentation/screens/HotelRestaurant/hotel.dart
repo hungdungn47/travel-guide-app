@@ -1,16 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+class Hotel {
+  final String name;
+  final double rating;
+  final String location;
+  final String imageUrl;
 
-class Hotel extends StatelessWidget {
-  const Hotel({Key? key}) : super(key: key);
+  Hotel({required this.name, required this.rating, required this.location, required this.imageUrl});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Hotel')
-      ),
+  factory Hotel.fromJson(Map<String, dynamic> json) {
+    return Hotel(
+      name: json['name'] as String,
+      rating: json['rating'] as double,
+      location: json['location'] as String,
+      imageUrl: json['image'] as String
     );
   }
 }

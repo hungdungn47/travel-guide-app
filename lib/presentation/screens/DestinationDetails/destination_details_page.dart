@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/controllers/destination_details_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
-import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
+import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_page.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_recommendation_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 
@@ -30,13 +30,13 @@ class DestinationDetailsPage extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(screen: Hotel());
+                HelperFunctions.navigateToScreen(screen: HotelPage());
               },
               icon: Icon(Icons.food_bank_outlined, color: Colors.grey, size:40,)
             ),
             IconButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(screen: Hotel());
+                HelperFunctions.navigateToScreen(screen: HotelPage());
               },
               icon: Icon(Icons.local_hotel_outlined, color: Colors.grey, size: 40,)
             ),

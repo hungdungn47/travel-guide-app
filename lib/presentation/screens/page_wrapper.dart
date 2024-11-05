@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
 import 'package:travel_guide_app/presentation/screens/FavoriteDestinations/favorite_destinations_page.dart';
 import 'package:travel_guide_app/presentation/screens/Home/home.dart';
-import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
+import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_page.dart';
 import 'package:travel_guide_app/presentation/screens/News/news_page.dart';
 import 'package:travel_guide_app/presentation/screens/Profile/user_profile.dart';
 import 'package:travel_guide_app/presentation/screens/Search/search_page.dart';
