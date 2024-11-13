@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:travel_guide_app/presentation/components/slider.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/login_page.dart';
+import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
 import 'package:travel_guide_app/presentation/screens/Home/home.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
 import 'package:travel_guide_app/presentation/screens/page_wrapper.dart';
@@ -18,10 +20,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      initialRoute: '/login',
+      initialRoute: '/home',
       getPages: [
         GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/home', page: () => PageWrapper())
+        GetPage(name: '/home', page: () => PageWrapper()),
       ],
       home: PageWrapper(),
     );
