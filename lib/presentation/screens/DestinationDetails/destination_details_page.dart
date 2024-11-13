@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_guide_app/presentation/controllers/destination_details_controller.dart';
+import 'package:travel_guide_app/presentation/controllers/destination_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_recommendation_page.dart';
@@ -10,18 +10,18 @@ class DestinationDetailsPage extends StatelessWidget {
   DestinationDetailsPage({Key? key}) : super(key: key);
 
   final NavigationController navigationController = Get.find<NavigationController>();
-  final DestinationDetailsController controller = Get.put(DestinationDetailsController());
+  final DestinationController controller = Get.find<DestinationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(controller.currentDestination.value),
+        title: Text(controller.destinationName.value),
       ),
       body: SafeArea(
         child: Center(
-          child: Obx(() => Text(controller.currentDestination.value)),
+          child: Obx(() => Text(controller.destinationName.value)),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -43,9 +43,7 @@ class DestinationDetailsPage extends StatelessWidget {
             Expanded(child: Container()),
             ElevatedButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(
-                    screen: TourRecommendationPage(),
-                    arguments: { 'destination' : 'Trang An' });
+                HelperFunctions.navigateToScreen(screen: TourRecommendationPage());
               },
               child: Text('Find tours'),
             )

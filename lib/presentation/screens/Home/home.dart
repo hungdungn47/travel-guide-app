@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/components/search_bar.dart';
+import 'package:travel_guide_app/presentation/controllers/destination_controller.dart';
 import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
 import 'package:travel_guide_app/presentation/screens/Search/search_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
@@ -26,10 +27,7 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchPage()),
-                  );
+                  HelperFunctions.navigateToScreen(screen: SearchPage());
                 },
                 child: CustomSearchBar(),
               ),
@@ -39,7 +37,10 @@ class Home extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             ElevatedButton(
-              onPressed: () => Get.to(DestinationDetailsPage()),
+              onPressed: () {
+                Get.put(DestinationController()).changeDestination('Trang An');
+                Get.to(DestinationDetailsPage());
+              },
               child: Text('Detail'),
             )
           ],

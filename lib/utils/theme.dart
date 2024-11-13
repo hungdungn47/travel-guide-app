@@ -30,11 +30,11 @@ class AppTheme {
         foregroundColor: Colors.white,
         backgroundColor: Color(0xff008CFF),
         disabledBackgroundColor: Colors.grey,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
         disabledForegroundColor: Colors.grey,
         textStyle: TextStyle(fontSize: 20, color: Colors.white),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-      )
+      ),
     ),
     useMaterial3: true,
   );
