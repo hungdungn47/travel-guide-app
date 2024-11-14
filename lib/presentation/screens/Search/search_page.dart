@@ -93,6 +93,8 @@ class _DestinationCardState extends State<DestinationCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      color: Theme.of(context).cardColor,
+      shadowColor: Theme.of(context).shadowColor,
       child: Row(
         children: [
           Expanded(
@@ -130,7 +132,16 @@ class _DestinationCardState extends State<DestinationCard> {
                     onTap: () => {
                       setState(() {
                         isFavorite = !isFavorite;
-                      })
+                      }),
+                      if (isFavorite)
+                        {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Added to favorite'),
+                              duration: Duration(seconds: 1),
+                            ),
+                          )
+                        }
                     },
                   )
                 ],
