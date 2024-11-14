@@ -1,74 +1,107 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:travel_guide_app/presentation/components/loading.dart';
 import 'package:travel_guide_app/presentation/components/slider.dart';
 import 'package:travel_guide_app/presentation/controllers/destination_details_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_recommendation_page.dart';
-import 'package:travel_guide_app/utils/helper_functions.dart';
+import 'package:travel_guide_app/utils/index.dart';
+
+import '../../../models/index.dart';
 
 class DestinationDetailsPage extends StatelessWidget {
-  DestinationDetailsPage({Key? key}) : super(key: key);
+  final int destinationId;
 
-  final NavigationController navigationController = Get.find<NavigationController>();
-  final DestinationDetailsController controller = Get.put(DestinationDetailsController());
+  DestinationDetailsPage({Key? key, required this.destinationId})
+      : super(key: key);
+
+  final NavigationController navigationController =
+      Get.find<NavigationController>();
+  final DestinationDetailsController controller =
+      Get.put(DestinationDetailsController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 238, 252, 250),
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 238, 252, 250),
-        elevation: 0,
-        // primary: false,
-        centerTitle: true,
-        title: Obx(
-              () => Text(controller.currentDestination.value),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CarouselSliderWidget(),
-              buildDescription(context, 'Giới thiệu', 'Tràng An, Ninh Bình là một vùng thiên nhiên hoang sơ với rừng rậm, sông suối trong lành và cảnh quan độc đáo. Hệ sinh thái karst tại đây nổi bật với những núi đá dạng tháp tuyệt đẹp, cùng thảm thực vật xanh mướt trên đá vôi. Nông thôn truyền thống kết hợp hài hòa với thiên nhiên, tạo nên một bức tranh sống động với ruộng lúa, vườn tược, sông suối và làng mạc. Các ngôi chùa, đền, phủ cổ kính tựa vào vách núi, mang đậm nét văn hóa và tín ngưỡng tâm linh, làm tăng thêm vẻ thanh bình, vĩnh hằng cho di sản Tràng An.'),
-              buildDescription(context, 'Giá trị văn hóa', "Tín ngưỡng tâm linh: Tràng An có nhiều ngôi chùa, đền và phủ cổ kính như chùa Bái Đính, đền Trần và đền Vũ Lâm. Đây là nơi thờ phụng các vị thần linh và những nhân vật lịch sử, gắn liền với văn hóa tâm linh của người dân địa phương.Lễ hội truyền thống: Nơi đây thường tổ chức các lễ hội truyền thống, mang đậm bản sắc văn hóa dân tộc như lễ hội chùa Bái Đính, lễ hội đền Trần, thu hút đông đảo du khách và người dân tham gia.")
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: buildBottomNavBar(context),
+    return FutureBuilder(
+      future: controller.fetchData(destinationId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            backgroundColor: const Color.fromARGB(255, 238, 252, 250),
+            appBar: AppBar(
+              backgroundColor: const Color.fromARGB(255, 238, 252, 250),
+              elevation: 0,
+              centerTitle: true,
+              title: const Text('Destination'),
+            ),
+            body: const LoadingAnimation(),
+          );
+        } else if (snapshot.hasError) {
+          return const Scaffold(
+            body: Center(child: Text('Error loading data')),
+          );
+        } else {
+          Destination destination = controller.destination.value!;
+          return Scaffold(
+            backgroundColor: const Color.fromARGB(255, 238, 252, 250),
+            appBar: AppBar(
+              backgroundColor: const Color.fromARGB(255, 238, 252, 250),
+              elevation: 0,
+              centerTitle: true,
+              title: Text(destination.name),
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CarouselSliderWidget(imgList: getImageInfoFromDestination(destination)),
+                    buildDescription(
+                        context, 'Giới thiệu', destination.description),
+                    buildDescription(
+                        context, 'Giá trị văn hóa', destination.culturalValue),
+                  ],
+                ),
+              ),
+            ),
+            bottomNavigationBar: buildBottomNavBar(context),
+          );
+        }
+      },
     );
   }
 
-  Widget buildDescription(BuildContext context, String title, String description) {
-      return Container(
-        margin: const EdgeInsets.only(top: 32, bottom: 8),
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
+  List<DestinationImageOverview> getImageInfoFromDestination(Destination destination) {
+    return destination.imageUrls.map((imageUrl) => DestinationImageOverview(imageUrl: imageUrl)).toList();
+  }
+
+  Widget buildDescription(
+      BuildContext context, String title, String description) {
+    return Container(
+      margin: const EdgeInsets.only(top: 32, bottom: 8),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 16,),
-            Text(
-              description,
-              textAlign: TextAlign.justify,
-              style: const TextStyle(
-                fontSize: 18
-              ),
-            )
-          ],
-        ),
-      );
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            description,
+            textAlign: TextAlign.justify,
+            style: const TextStyle(fontSize: 18),
+          )
+        ],
+      ),
+    );
   }
 
   Widget buildBottomNavBar(BuildContext context) {
@@ -84,7 +117,8 @@ class DestinationDetailsPage extends StatelessWidget {
       child: BottomAppBar(
         height: 68,
         padding: EdgeInsets.all(0),
-        color: Colors.white,  // Make BottomAppBar transparent so the Container's decoration is visible
+        color: Colors.white,
+        // Make BottomAppBar transparent so the Container's decoration is visible
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,21 +128,24 @@ class DestinationDetailsPage extends StatelessWidget {
               onPressed: () {
                 HelperFunctions.navigateToScreen(screen: Hotel());
               },
-              icon: Icon(Icons.favorite, color: Colors.grey.withOpacity(0.6), size: 36),
+              icon: Icon(Icons.favorite,
+                  color: Colors.grey.withOpacity(0.6), size: 36),
             ),
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
                 HelperFunctions.navigateToScreen(screen: Hotel());
               },
-              icon: Icon(Icons.food_bank_outlined, color: Colors.grey.withOpacity(0.6), size: 36),
+              icon: Icon(Icons.food_bank_outlined,
+                  color: Colors.grey.withOpacity(0.6), size: 36),
             ),
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
                 HelperFunctions.navigateToScreen(screen: Hotel());
               },
-              icon: Icon(Icons.local_hotel_outlined, color: Colors.grey.withOpacity(0.6), size: 40),
+              icon: Icon(Icons.local_hotel_outlined,
+                  color: Colors.grey.withOpacity(0.6), size: 40),
             ),
             const SizedBox(width: 16),
             Expanded(child: Container()),
@@ -123,21 +160,17 @@ class DestinationDetailsPage extends StatelessWidget {
                 minimumSize: Size(150, 68),
                 backgroundColor: Color(0xFF1BB7C0),
                 shape: RoundedRectangleBorder(
-                  // borderRadius: BorderRadius.circular(20),
-                ),
+                    // borderRadius: BorderRadius.circular(20),
+                    ),
               ),
               child: const Text(
-                  'Find tours',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                ),
+                'Find tours',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
           ],
         ),
       ),
     );
-
   }
 }
