@@ -2,14 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/controllers/destination_controller.dart';
+import 'package:travel_guide_app/presentation/controllers/tours_controller.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_component.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_details.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 
+import '../../components/loading_animation.dart';
+
 class TourRecommendationPage extends StatelessWidget {
   TourRecommendationPage({Key? key}) : super(key: key);
 
-  final DestinationController destinationController = Get.find<DestinationController>();
+  final ToursController _controller = Get.put(ToursController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +44,32 @@ class TourRecommendationPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 7,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      HelperFunctions.navigateToScreen(screen: TourDetails());
+            child: FutureBuilder<void>(
+              future: _controller.fetchTours(),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: LoadingAnimation());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _controller.tours.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                        child: GestureDetector(
+                            onTap: () {
+                              HelperFunctions.navigateToScreen(screen: TourDetails(tour: _controller.tours[index]));
+                            },
+                            child: TourComponent(tour: _controller.tours[index]),
+                        ),
+                      );
                     },
-                    child: const TourComponent()
-                  ),
-                );
+                  );
+                } else {
+                  return const Center(child: Text('No tours available.'));
+                }
               },
             ),
           )

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/login_page.dart';
-import 'package:travel_guide_app/presentation/screens/Home/home.dart';
-import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
 import 'package:travel_guide_app/presentation/screens/page_wrapper.dart';
 import 'package:travel_guide_app/utils/theme.dart';
+import 'package:travel_guide_app/utils/sl.dart';
+import 'networking/api/index.dart';
 
 void main() {
+  setup();
   runApp(const MyApp());
+}
+
+void setup() {
+  sl.registerSingleton<ApiService>(ApiServiceImpl.instance);
 }
 
 class MyApp extends StatelessWidget {

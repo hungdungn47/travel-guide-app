@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-class TourComponent extends StatelessWidget {
-  const TourComponent ({Key? key}) : super(key: key);
+import '../../../models/Tour.dart';
 
+class TourComponent extends StatelessWidget {
+  const TourComponent ({Key? key, required this.tour}) : super(key: key);
+  final Tour tour;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +29,7 @@ class TourComponent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Ta Xua', style: TextStyle(
+                Text(tour.destination, style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontSize: 22,
                   fontWeight: FontWeight.w300
@@ -36,7 +38,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/location_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    const Text('Lang Son, Vietnam', style: TextStyle(
+                    Text(tour.location, style: TextStyle(
                       fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -45,7 +47,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/time_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    const Text('2 days - 1 night', style: TextStyle(
+                    Text('${tour.days} days - ${tour.nights} night', style: TextStyle(
                         fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -54,7 +56,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/price_tag_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    const Text('300 \$', style: TextStyle(
+                    Text('${tour.price} \$', style: TextStyle(
                         fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -68,7 +70,7 @@ class TourComponent extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                'https://i2.ex-cdn.com/crystalbay.com/files/content/2024/06/19/du-lich-ta-xua-1-1136.jpg',
+                tour.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
