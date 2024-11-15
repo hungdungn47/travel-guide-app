@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/controllers/destination_controller.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_component.dart';
+import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_details.dart';
+import 'package:travel_guide_app/utils/helper_functions.dart';
 
 class TourRecommendationPage extends StatelessWidget {
   TourRecommendationPage({Key? key}) : super(key: key);
@@ -42,9 +45,14 @@ class TourRecommendationPage extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               itemCount: 7,
               itemBuilder: (BuildContext context, int index) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                  child: TourComponent(),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      HelperFunctions.navigateToScreen(screen: TourDetails());
+                    },
+                    child: const TourComponent()
+                  ),
                 );
               },
             ),

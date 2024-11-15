@@ -6,9 +6,9 @@ import 'dart:convert';
 class HelperFunctions {
   static void navigateToScreen({required Widget screen, Object? arguments}) {
     if(arguments != null) {
-      Get.to(() => screen, arguments: arguments);
+      Get.to(screen, arguments: arguments);
     } else {
-    Get.to(() => screen);
+    Get.to(screen);
     }
   }
 }

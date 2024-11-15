@@ -36,7 +36,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/location_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    Text('Lang Son, Vietnam', style: TextStyle(
+                    const Text('Lang Son, Vietnam', style: TextStyle(
                       fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -45,7 +45,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/time_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    Text('2 days - 1 night', style: TextStyle(
+                    const Text('2 days - 1 night', style: TextStyle(
                         fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -54,7 +54,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/price_tag_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    Text('300 \$', style: TextStyle(
+                    const Text('300 \$', style: TextStyle(
                         fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -62,7 +62,7 @@ class TourComponent extends StatelessWidget {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             width: 140,
             height: 125,
             child: ClipRRect(
