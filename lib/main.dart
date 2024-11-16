@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travel_guide_app/presentation/screens/Authentication/login_page.dart';
+import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_page.dart';
 import 'package:travel_guide_app/presentation/screens/page_wrapper.dart';
 import 'package:travel_guide_app/utils/theme.dart';
 import 'package:travel_guide_app/utils/sl.dart';
@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      initialRoute: '/home',
+      initialRoute: '/login',
       getPages: [
-        GetPage(name: '/login', page: () => LoginPage()),
+        GetPage(name: '/login', page: () => const LoginPage()),
         GetPage(name: '/home', page: () => PageWrapper())
       ],
       home: PageWrapper(),
