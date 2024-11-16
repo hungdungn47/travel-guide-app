@@ -114,7 +114,7 @@ class ApiServiceImpl implements ApiService {
     return [
       Destination(
           id: 1,
-          name: 'Tràng An, Ninh Bình',
+          name: 'Tràng An',
           description:
           'Tràng An, Ninh Bình là một vùng thiên nhiên hoang sơ với rừng rậm, sông suối trong lành và cảnh quan độc đáo...',
           culturalValue:
@@ -128,7 +128,7 @@ class ApiServiceImpl implements ApiService {
           location: 'Tràng An, Ninh Bình'),
       Destination(
           id: 2,
-          name: 'Hạ Long Bay, Quảng Ninh',
+          name: 'Hạ Long Bay',
           description:
           'Hạ Long Bay, Quảng Ninh nổi tiếng với hàng nghìn hòn đảo đá vôi, những hang động kỳ bí và là di sản thiên nhiên thế giới...',
           culturalValue:
@@ -142,7 +142,7 @@ class ApiServiceImpl implements ApiService {
           location: 'Hạ Long Bay, Quảng Ninh'),
       Destination(
           id: 3,
-          name: 'Phú Quốc, Kiên Giang',
+          name: 'Phú Quốc',
           description:
           'Phú Quốc, Kiên Giang là hòn đảo lớn nhất Việt Nam với bãi biển tuyệt đẹp, nước biển trong xanh và những khu rừng nhiệt đới...',
           culturalValue:
@@ -156,7 +156,7 @@ class ApiServiceImpl implements ApiService {
           location: 'Phú Quốc, Kiên Giang'),
       Destination(
           id: 4,
-          name: 'Sapa, Lào Cai',
+          name: 'Sapa',
           description:
           'Sapa nổi tiếng với cảnh đẹp núi non hùng vĩ, những thửa ruộng bậc thang, và bản sắc văn hóa dân tộc thiểu số...',
           culturalValue:
@@ -170,7 +170,7 @@ class ApiServiceImpl implements ApiService {
           location: 'Sapa, Lào Cai'),
       Destination(
           id: 5,
-          name: 'Hue, Thừa Thiên Huế',
+          name: 'Hue',
           description:
           'Huế là thành phố cổ kính, nổi tiếng với các di tích lịch sử, chùa chiền, đền đài và các công trình văn hóa...',
           culturalValue:
@@ -184,7 +184,7 @@ class ApiServiceImpl implements ApiService {
           location: 'Hue, Thừa Thiên Huế'),
       Destination(
           id: 6,
-          name: 'Mộc Châu, Sơn La',
+          name: 'Mộc Châu',
           description:
           'Mộc Châu nổi tiếng với những cánh đồng hoa mận, hoa đào, cùng khí hậu mát mẻ và phong cảnh hùng vĩ...',
           culturalValue:

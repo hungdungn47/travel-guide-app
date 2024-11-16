@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:travel_guide_app/presentation/controllers/destination_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/favorite_destinations_controller.dart';
 import 'package:get/get.dart';
+import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
+import 'package:travel_guide_app/utils/helper_functions.dart';
 
 import '../../components/loading_animation.dart';
 
 class FavoriteDestinationsPage extends StatelessWidget {
   FavoriteDestinationsPage({Key? key}) : super(key: key);
   final FavoriteDestinationsController _controller = Get.put(FavoriteDestinationsController());
+  final DestinationController destinationController = Get.put(DestinationController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +65,10 @@ class FavoriteDestinationsPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    destinationController.changeDestination(destination.name);
+                                    HelperFunctions.navigateToScreen(screen: DestinationDetailsPage());
+                                  },
                                   child: Text('Details')
                               ),
                               const SizedBox(width: 10),
