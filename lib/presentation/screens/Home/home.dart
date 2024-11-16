@@ -104,10 +104,11 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchPage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => SearchPage()),
+                // );
+                HelperFunctions.navigateToScreen(screen: SearchPage());
               },
               child: CustomSearchBar(),
             ),
@@ -173,10 +174,11 @@ class Home extends StatelessWidget {
   Widget buildScrollImageItem(BuildContext context,String imgUrl, String description, int id) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DestinationDetailsPage(destinationId: id)),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => DestinationDetailsPage(destinationId: id)),
+        // );
+        HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: id));
       },
       child: Container(
         margin: const EdgeInsets.only(top: 16, right: 24),

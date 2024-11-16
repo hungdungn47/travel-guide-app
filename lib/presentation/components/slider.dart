@@ -67,10 +67,11 @@ class CarouselSliderWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (data.id != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DestinationDetailsPage(destinationId: data.id!)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => DestinationDetailsPage(destinationId: data.id!)),
+          // );
+          HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: data.id!,));
         }
       },
       child: Container(
