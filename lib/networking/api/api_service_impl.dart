@@ -8,10 +8,12 @@ class ApiServiceImpl implements ApiService {
 
   static ApiServiceImpl get instance => _instance;
 
+  @override
   Future<List<Destination>> getFestivalDestination([String? province]) async {
     return fetchData();
   }
 
+  @override
   Future<List<Destination>> getRecommendationDestination(
       [String? province]) async {
     return fetchData();

@@ -75,18 +75,18 @@ class Home extends StatelessWidget {
                   ),
                   SizedBox(width: 8, height: 0),
                   Text(
-                    'Ninh Bình',
+                    'Việt Nam',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   SizedBox(width: 8, height: 0),
-                  Icon(
-                    Icons.arrow_drop_down_sharp,
-                    size: 24,
-                    color: Color(0xFF1BB7C0),
-                  )
+                  // Icon(
+                  //   Icons.arrow_drop_down_sharp,
+                  //   size: 24,
+                  //   color: Color(0xFF1BB7C0),
+                  // )
                 ],
               ),
             ),
