@@ -66,8 +66,8 @@ class FavoriteDestinationsPage extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                   onPressed: () {
-                                    destinationController.changeDestination(destination.name);
-                                    HelperFunctions.navigateToScreen(screen: DestinationDetailsPage());
+                                    // destinationController.changeDestination(destination.name);
+                                    HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: destination.id,));
                                   },
                                   child: Text('Details')
                               ),

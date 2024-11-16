@@ -36,8 +36,13 @@ class CustomAnimatedBottomBar extends StatelessWidget {
     final bgColor = backgroundColor;
 
     return Container(
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: bgColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(64),
+          topRight: Radius.circular(64),
+        ),
         boxShadow: [
           if (showElevation)
             const BoxShadow(
@@ -50,7 +55,7 @@ class CustomAnimatedBottomBar extends StatelessWidget {
         child: Container(
           width: double.infinity,
           height: containerHeight,
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 32),
           child: Row(
             mainAxisAlignment: mainAxisAlignment,
             children: items.map((item) {
