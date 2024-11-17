@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      initialRoute: '/login',
+      initialRoute: '/home',
       getPages: [
         GetPage(name: '/login', page: () => const LoginPage()),
         GetPage(name: '/home', page: () => PageWrapper())
