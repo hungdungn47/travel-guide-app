@@ -106,10 +106,6 @@ class Home extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => SearchPage()),
-                // );
                 HelperFunctions.navigateToScreen(screen: SearchPage());
               },
               child: const AbsorbPointer(child: CustomSearchBar()),

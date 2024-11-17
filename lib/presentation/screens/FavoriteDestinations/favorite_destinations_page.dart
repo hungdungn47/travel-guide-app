@@ -5,8 +5,7 @@ import 'package:travel_guide_app/presentation/controllers/favorite_destinations_
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
-
-import '../../components/loading_animation.dart';
+import '../../components/loading.dart';
 
 class FavoriteDestinationsPage extends StatelessWidget {
   FavoriteDestinationsPage({Key? key}) : super(key: key);

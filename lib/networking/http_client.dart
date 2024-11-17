@@ -1,15 +1,19 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
-import 'package:travel_guide_app/networking/config.dart';
+
+import './index.dart';
 
 typedef JSON = Map<String, dynamic>;
 
 class HttpClient {
   static String baseUrl = Config.baseUrl;
-  static final client = RetryClient(http.Client());
-  static Future<JSON?> get({required String endPoint, JSON? queryParams}) async {
+  // static final client = RetryClient(http.Client());
+  static final client = HttpClientWithInterceptor(RetryClient(http.Client()));
+
+  static Future<JSON?> get(
+      {required String endPoint, JSON? queryParams}) async {
     final url = Uri.https(baseUrl, endPoint, queryParams);
     var response = await client.get(url);
     if (response.statusCode != 204 && response.statusCode != 200) {
@@ -32,12 +36,20 @@ class HttpClient {
   }
 
   static Future<JSON?> post(
-      {required String endPoint, JSON? queryParams, Object? body}) async {
+      {required String endPoint, JSON? queryParams, Object? body, String contentType = 'application/json'}) async {
     final url = Uri.https(baseUrl, endPoint, queryParams);
-    var response = await client.post(url, body: body);
-    if (response.statusCode != 204 && response.statusCode != 200) {
-      return null;
-    }
+    print(body);
+    var response = await client.post(
+      url,
+      headers: {
+        'Content-Type': contentType,
+      },
+      body: json.encode(body),
+    );
+    print(response);
+    // if (response.statusCode != 204 && response.statusCode != 200) {
+    //   return null;
+    // }
 
     final JSON parsed = json.decode(response.body);
     return parsed;

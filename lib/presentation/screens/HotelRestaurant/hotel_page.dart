@@ -29,6 +29,11 @@ class _HotelPageState extends State<HotelPage> {
       child: BlocBuilder<HotelController, HotelState>(
         builder: (context, state) {
           return Scaffold(
+            appBar: AppBar(
+              title: const Text('Hotels/Restaurant'),
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+            ),
             body: _buildUI(context, state),
             //bottomNavigationBar: _buildBottomUI(context, state),
           );
