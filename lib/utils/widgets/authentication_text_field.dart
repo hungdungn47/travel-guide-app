@@ -66,9 +66,10 @@ class _AuthenticationTextFieldState extends State<AuthenticationTextField> {
       child: Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
-              color: Colors.grey.shade400,
-              blurRadius: 20.0,
-              offset: const Offset(3, 3))
+              color: Colors.grey.shade200,
+              blurRadius: 10.0,
+              spreadRadius: 0.0,
+              offset: const Offset(8, 6))
         ]),
         child: TextFormField(
           style: const TextStyle(fontWeight: FontWeight.w400),

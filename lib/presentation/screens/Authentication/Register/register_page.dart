@@ -131,12 +131,6 @@ class _RegisterPageState extends State<RegisterPage> {
             'Sign up',
             style: const TextStyle(
               fontSize: 45,
-              shadows: <Shadow>[
-                Shadow(
-                    offset: Offset(0.0, 4.0),
-                    blurRadius: 15.0,
-                    color: Colors.lightBlueAccent),
-              ],
             ),
             gradient: LinearGradient(colors: [
               Colors.blue.shade200,
