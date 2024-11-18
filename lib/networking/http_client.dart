@@ -10,7 +10,10 @@ typedef JSON = Map<String, dynamic>;
 class HttpClient {
   static String baseUrl = Config.baseUrl;
   // static final client = RetryClient(http.Client());
-  static final client = HttpClientWithInterceptor(RetryClient(http.Client()));
+  // static final client = HttpClientWithInterceptor(RetryClient(http.Client()));
+
+  static final client = HttpClientWithInterceptor(http.Client());
+
 
   static Future<JSON?> get(
       {required String endPoint, JSON? queryParams}) async {
@@ -19,7 +22,9 @@ class HttpClient {
     if (response.statusCode != 204 && response.statusCode != 200) {
       return null;
     }
-    final JSON parsed = json.decode(response.body);
+    // final JSON parsed = json.decode(response.body);
+    // return parsed;
+    final JSON parsed = json.decode(utf8.decode(response.bodyBytes));
     return parsed;
   }
 

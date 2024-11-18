@@ -12,12 +12,11 @@ class DestinationDetailsController extends GetxController {
     destination.value = newDestination;
   }
 
-  Future<Destination?> fetchDestinations(int id) async {
-    await Future.delayed(const Duration(seconds: 5));
+  Future<Destination?> fetchDestinations(String id) async {
     return apiService.getDestinationById(id);
   }
 
-  Future<void> fetchData(int id) async {
+  Future<void> fetchData(String id) async {
     Destination? destination = await fetchDestinations(id);
     changeDestination(destination!);
   }

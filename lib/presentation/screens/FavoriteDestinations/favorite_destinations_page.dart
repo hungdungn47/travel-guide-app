@@ -44,7 +44,7 @@ class FavoriteDestinationsPage extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.network(
-                                destination.imageUrls[0],
+                                destination.imageUrl[0],
                                 height: 450,
                                 width: 300,
                                 fit: BoxFit.cover,

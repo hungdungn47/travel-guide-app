@@ -9,7 +9,7 @@ import 'package:travel_guide_app/utils/index.dart';
 import '../../../models/index.dart';
 
 class DestinationDetailsPage extends StatelessWidget {
-  final int destinationId;
+  final String destinationId;
 
   DestinationDetailsPage({Key? key, required this.destinationId})
       : super(key: key);
@@ -74,7 +74,7 @@ class DestinationDetailsPage extends StatelessWidget {
 
   List<DestinationImageOverview> getImageInfoFromDestination(
       Destination destination) {
-    return destination.imageUrls
+    return destination.imageUrl
         .map((imageUrl) => DestinationImageOverview(imageUrl: imageUrl))
         .toList();
   }
