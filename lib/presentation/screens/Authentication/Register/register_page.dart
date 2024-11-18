@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Register/register_controller.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Register/register_state.dart';
-import 'package:travel_guide_app/presentation/screens/Authentication/login_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 import 'package:travel_guide_app/utils/hex_color_ext.dart';
 import 'package:travel_guide_app/utils/widgets/authentication_text_field.dart';
 
 import '../../../../utils/widgets/gradient_text.dart';
+import '../Login/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -133,12 +133,6 @@ class _RegisterPageState extends State<RegisterPage> {
             'Sign up',
             style: const TextStyle(
               fontSize: 45,
-              shadows: <Shadow>[
-                Shadow(
-                    offset: Offset(0.0, 4.0),
-                    blurRadius: 15.0,
-                    color: Colors.lightBlueAccent),
-              ],
             ),
             gradient: LinearGradient(colors: [
               Colors.blue.shade200,
@@ -170,6 +164,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _navigateLogin() {
-    HelperFunctions.navigateToScreen(screen: LoginPage());
+    HelperFunctions.navigateToScreen(screen: const LoginPage());
   }
 }

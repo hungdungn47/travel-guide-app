@@ -158,12 +158,6 @@ class _LoginPageState extends State<LoginPage> {
             'Login',
             style: const TextStyle(
               fontSize: 45,
-              shadows: <Shadow>[
-                Shadow(
-                    offset: Offset(0.0, 4.0),
-                    blurRadius: 15.0,
-                    color: Colors.lightBlueAccent),
-              ],
             ),
             gradient: LinearGradient(colors: [
               Colors.blue.shade200,
@@ -189,9 +183,10 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(15.0),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.shade400,
+                    color: Colors.grey.shade300,
                     blurRadius: 10.0,
-                    offset: const Offset(0, 6))
+                    spreadRadius: 0.0,
+                    offset: const Offset(8, 6))
               ]),
         ));
   }
