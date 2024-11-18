@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
 import 'package:travel_guide_app/models/index.dart';
 import '../../networking/api/index.dart';
@@ -6,6 +8,7 @@ import '../../utils/index.dart';
 class FavoriteDestinationsController extends GetxController {
   final apiService = sl.get<ApiService>();
   var favoriteDestinations = <Destination>[].obs;
+  var isViewModeCarousel = true.obs;
 
   @override
   void onInit() {
@@ -25,5 +28,9 @@ class FavoriteDestinationsController extends GetxController {
 
   void changeFavoriteDestinations(List<Destination> destinations) {
     favoriteDestinations.assignAll(destinations);
+  }
+
+  void toggleViewMode() {
+    isViewModeCarousel.value = !(isViewModeCarousel.value);
   }
 }
