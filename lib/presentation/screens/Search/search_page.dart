@@ -23,25 +23,20 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          //   child: TextField(
-          //     decoration: InputDecoration(
-          //       hintText: 'Search',
-          //       prefixIcon: Icon(Icons.search),
-          //       border: OutlineInputBorder(
-          //         borderRadius: BorderRadius.circular(30),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // const CustomSearchBar(),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: CustomSearchBar(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: EdgeInsets.only(right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -58,7 +53,8 @@ class _SearchPageState extends State<SearchPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return BottomModalMenu();
-                        })
+                        },
+                        showDragHandle: true),
                   },
                 ),
               ],
@@ -100,7 +96,7 @@ class _DestinationCardState extends State<DestinationCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      color: Theme.of(context).cardColor,
+      color: Colors.blue.shade50,
       shadowColor: Theme.of(context).shadowColor,
       child: Row(
         children: [
@@ -127,7 +123,12 @@ class _DestinationCardState extends State<DestinationCard> {
                   Row(
                     children: [
                       Icon(Icons.location_on),
-                      Text("Ninh Binh, Viet Nam"),
+                      Expanded(
+                        child: Text(
+                          "Ninh Binh, Viet Nam",
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -184,62 +185,54 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
-            child: Divider(
-              thickness: 5,
-              color: Colors.grey,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Filter',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
-            'Filter',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+            Text(
+              'City/Province:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
-            'City/Province:',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            DropdownBox(
+              title: city,
+              options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
+              onSelected: (value) {
+                setState(() {
+                  city = value;
+                });
+              },
             ),
-          ),
-          DropdownBox(
-            title: city,
-            options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
-            onSelected: (value) {
-              setState(() {
-                city = value;
-              });
-            },
-          ),
-          Text(
-            'Type of Travel:',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            Text(
+              'Type of Travel:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Row(
-              children: [
-                Expanded(child: Text('Cultrue & History')),
-                Checkbox(
-                    value: isCulture,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isCulture = value!;
-                      });
-                    }),
-              ],
-            )
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child:
-              Row(
+            Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: Text('Cultrue & History')),
+                    Checkbox(
+                        value: isCulture,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isCulture = value!;
+                          });
+                        }),
+                  ],
+                )),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Row(
                 children: [
                   Expanded(child: Text('Leisure & Relaxation')),
                   Checkbox(
@@ -251,23 +244,23 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
                       }),
                 ],
               ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Row(
-              children: [
-                Expanded(child: Text('Adventure')),
-                Checkbox(
-                    value: isAdventure,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isAdventure = value!;
-                      });
-                    }),
-              ],
-            )
-          ),
-        ],
+            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: Text('Adventure')),
+                    Checkbox(
+                        value: isAdventure,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isAdventure = value!;
+                          });
+                        }),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -322,7 +315,7 @@ class _DropdownBoxState extends State<DropdownBox> {
           },
         );
       },
-      child: Padding (
+      child: Padding(
         padding: EdgeInsets.all(20),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
