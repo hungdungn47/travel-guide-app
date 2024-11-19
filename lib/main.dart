@@ -18,7 +18,9 @@ Future<void> setup() async {
   final localStorage = sl.get<LocalStorage>();
   final accessToken = await localStorage.readData('accessToken');
 
-  Config.accessToken = accessToken;
+  if(accessToken != null) {
+    Config.accessToken = accessToken;
+  }
 }
 
 class MyApp extends StatelessWidget {

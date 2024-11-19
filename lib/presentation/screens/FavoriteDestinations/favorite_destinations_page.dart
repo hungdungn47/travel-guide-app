@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 
-import '../../components/loading_animation.dart';
+import '../../components/loading.dart';
 
 class FavoriteDestinationsPage extends StatelessWidget {
   FavoriteDestinationsPage({Key? key}) : super(key: key);
@@ -166,7 +166,7 @@ class FavoriteDestinationsPage extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                destination.imageUrls[0],
+                destination.imageUrl[0],
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
@@ -205,7 +205,7 @@ class FavoriteDestinationsPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          destination.imageUrls[0],
+                          destination.imageUrl[0],
                           width: 300,
                           fit: BoxFit.cover,
                         ),
