@@ -1,23 +1,27 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_state.dart';
+import 'package:get/get.dart';
 
 import 'hotel.dart';
 
-class HotelController extends Cubit<HotelState> {
-  HotelController() : super(const HotelState()) {
-    _init();
-  }
+class HotelController extends GetxController {
+  var hotelLoading = true.obs;
+  var hotelIsRecommending = true.obs;
+  var hotelIsDone = true.obs;
+  var hotels = <Hotel>[].obs;
+  var hotelCurrentSearchPrompt = ''.obs;
+  var hotelCurrentIndex = 0.obs;
 
   late ScrollController _sc;
 
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
-  void _init() async {
+  @override
+  void onInit() async {
+    super.onInit();
     _sc = ScrollController();
     _sc.addListener(() async {
       if (_sc.position.pixels == _sc.position.maxScrollExtent) {
-        if(!state.isRecommending && !state.isDone) {
+        if(hotelIsRecommending.value && !hotelIsDone.value) {
           await _addToHotelLists();
         }
       }
@@ -31,39 +35,40 @@ class HotelController extends Cubit<HotelState> {
   }
 
   Future<void> _addToHotelLists() async {
-    if (!state.loading) {
-      emit(state.copyWith(loading: true));
+    if (!hotelLoading.value) {
+      hotelLoading.value = !hotelLoading.value;
     }
 
-    List<Hotel> hotelsToAdd = await _search(state.currentSearchPrompt, 0);
+    List<Hotel> hotelsToAdd = await _search(hotelCurrentSearchPrompt.value, 0);
     List<Hotel> currentHotels = [];
 
-    currentHotels.addAll(state.hotels);
+    currentHotels.addAll(hotels);
 
     for (Hotel hotel in hotelsToAdd) {
       currentHotels.add(hotel);
     }
 
-    for(int i = state.hotels.length; i < currentHotels.length; i++) {
+    for(int i = hotels.length; i < currentHotels.length; i++) {
       listKey.currentState!
           .insertItem(i, duration: const Duration(milliseconds: 500));
     }
 
-    emit(state.copyWith(
-        currentIndex: currentHotels.length,
-        hotels: currentHotels,
-        loading: false,
-        isRecommending: false));
+
+        hotelCurrentIndex.value = currentHotels.length;
+        hotels.assignAll(currentHotels);
+        hotelLoading.value = false;
+        hotelIsRecommending.value = false;
   }
 
   Future<void> updateHotelLists(String prompt) async {
-    for(int i = 0; i < state.hotels.length; i++) {
+    for(int i = 0; i < hotels.length; i++) {
       listKey.currentState!.removeItem(0, (context, animation) => Container(),
           duration: Duration.zero);
     }
 
-    if (!state.loading) {
-      emit(state.copyWith(loading: true, hotels: []));
+    if (!hotelLoading.value) {
+      hotelLoading.value = true;
+      hotels.clear();
     }
 
     List<Hotel> updatedHotels = await _search(prompt, 0);
@@ -73,12 +78,11 @@ class HotelController extends Cubit<HotelState> {
           .insertItem(i, duration: const Duration(milliseconds: 500));
     }
 
-    emit(state.copyWith(
-        currentIndex: updatedHotels.length,
-        isRecommending: false,
-        currentSearchPrompt: prompt,
-        loading: false,
-        hotels: updatedHotels));
+        hotelCurrentIndex.value = updatedHotels.length;
+        hotelIsRecommending.value = false;
+        hotelCurrentSearchPrompt.value = prompt;
+        hotelLoading.value = false;
+        hotels.assignAll(updatedHotels);
   }
 
   Future<List<String>> getSuggestion(String prompt) async {
@@ -87,8 +91,9 @@ class HotelController extends Cubit<HotelState> {
   }
 
   Future<void> getRecommendationLists() async {
-    if (!state.loading) {
-      emit(state.copyWith(loading: true, hotels: []));
+    if (!hotelLoading.value) {
+      hotelLoading.value = true;
+      hotels.clear();
     }
     // Only for demonstration
     List<Hotel> recommendations = await _search("Recommendation", 0);
@@ -96,7 +101,8 @@ class HotelController extends Cubit<HotelState> {
       listKey.currentState!
           .insertItem(i, duration: const Duration(milliseconds: 500));
     }
-    emit(state.copyWith(hotels: recommendations, loading: false));
+    hotels.assignAll(recommendations);
+    hotelLoading.value = false;
   }
 
   Future<List<Hotel>> _search(String prompt, int startIndex) async {
