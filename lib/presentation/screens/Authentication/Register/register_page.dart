@@ -1,44 +1,25 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Register/register_controller.dart';
-import 'package:travel_guide_app/presentation/screens/Authentication/Register/register_state.dart';
 import 'package:travel_guide_app/utils/hex_color_ext.dart';
 import 'package:travel_guide_app/utils/widgets/authentication_text_field.dart';
 
 import '../../../../utils/widgets/gradient_text.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class RegisterPage extends StatelessWidget {
+  RegisterPage({super.key});
 
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  late final RegisterController _controller;
-
-  RegisterController _createController() {
-    _controller = RegisterController();
-    return _controller;
-  }
+  final RegisterController _controller = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _createController(),
-      child: BlocBuilder<RegisterController, RegisterState>(
-        builder: (context, state) {
-          return Scaffold(
-            body: _buildUI(context, state),
-            //bottomNavigationBar: _buildBottomUI(context, state),
-          );
-        },
-      ),
+    return Scaffold(
+      body: _buildUI(context),
     );
   }
 
-  Widget _buildUI(BuildContext context, RegisterState state) {
+  Widget _buildUI(BuildContext context) {
     return SafeArea(
       child: Container(
         alignment: Alignment.center,
@@ -48,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildRegisterTitle(context, state),
+              _buildRegisterTitle(context),
               const SizedBox(
                 height: 10,
               ),
@@ -87,8 +68,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           color: Theme.of(context).primaryColor),
                     ),
                   ])),
-              _buildRegisterButton(context, state),
-              _buildLoginPrompt(context, state)
+              _buildRegisterButton(context),
+              _buildLoginPrompt(context)
             ],
           ),
         ),
@@ -96,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildRegisterButton(BuildContext context, RegisterState state) {
+  Widget _buildRegisterButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: SizedBox(
@@ -120,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildRegisterTitle(BuildContext context, RegisterState state) {
+  Widget _buildRegisterTitle(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -142,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildLoginPrompt(BuildContext context, RegisterState state) {
+  Widget _buildLoginPrompt(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: RichText(
@@ -161,5 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _navigateLogin() {}
+  void _navigateLogin() {
+
+  }
 }

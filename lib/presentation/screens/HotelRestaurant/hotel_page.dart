@@ -1,33 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_controller.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_state.dart';
+import 'package:travel_guide_app/utils/local_storage.dart';
 import 'package:travel_guide_app/utils/widgets/gradient_text.dart';
 
 import '../../../gen/assets.gen.dart';
 import 'hotel.dart';
 
-class HotelPage extends StatefulWidget {
-  const HotelPage({super.key});
+class HotelPage extends StatelessWidget {
+  HotelPage({super.key});
 
-  @override
-  State<HotelPage> createState() => _HotelPageState();
-}
-
-class _HotelPageState extends State<HotelPage> {
-  late final HotelController _controller;
-
-  HotelController _createController() {
-    _controller = HotelController();
-    return _controller;
-  }
+  final HotelController _controller = Get.put(HotelController());
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _createController(),
-      child: BlocBuilder<HotelController, HotelState>(
-        builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
               title: const Text("Hotel", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),),
@@ -36,14 +24,11 @@ class _HotelPageState extends State<HotelPage> {
               elevation: 0,
             ),
             extendBodyBehindAppBar: true,
-            body: _buildUI(context, state),
+            body: Obx(() => _buildUI(context)),
           );
-        },
-      ),
-    );
   }
 
-  Widget _buildUI(BuildContext context, HotelState state) {
+  Widget _buildUI(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -55,17 +40,17 @@ class _HotelPageState extends State<HotelPage> {
       child: SafeArea(
         child: Column(
           children: [
-            _buildSearchBar(context, state),
-            _buildRecommendationText(context, state),
-            _buildHotelEntriesList(context, state),
+            _buildSearchBar(context),
+            _buildRecommendationText(context),
+            _buildHotelEntriesList(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRecommendationText(BuildContext context, HotelState state) {
-    if (state.isRecommending) {
+  Widget _buildRecommendationText(BuildContext context) {
+    if (_controller.hotelIsRecommending.value) {
       return GradientText(
         'Our Recommendations',
         style: const TextStyle(
@@ -87,21 +72,21 @@ class _HotelPageState extends State<HotelPage> {
     }
   }
 
-  Widget _buildHotelEntriesList(BuildContext context, HotelState state) {
+  Widget _buildHotelEntriesList(BuildContext context) {
     return Expanded(
       child: AnimatedList(
         key: _controller.listKey,
-        initialItemCount: state.hotels.length + 1,
+        initialItemCount: _controller.hotels.length + 1,
         scrollDirection: Axis.vertical,
         itemBuilder: (context, index, animation) {
-          if (index == state.hotels.length) {
-            if (!state.isDone) {
-              return _buildProcessIndicator(context, state);
+          if (index == _controller.hotels.length) {
+            if (!_controller.hotelIsDone.value) {
+              return _buildProcessIndicator(context);
             } else {
               return Container();
             }
           } else {
-            return _buildHotelEntry(context, state.hotels[index], animation);
+            return _buildHotelEntry(context, _controller.hotels[index], animation);
           }
         },
         controller: _controller.getScrollController(),
@@ -109,7 +94,7 @@ class _HotelPageState extends State<HotelPage> {
     );
   }
 
-  Widget _buildSearchBar(BuildContext context, HotelState state) {
+  Widget _buildSearchBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       child: SearchAnchor(
@@ -260,12 +245,12 @@ class _HotelPageState extends State<HotelPage> {
     );
   }
 
-  Widget _buildProcessIndicator(BuildContext context, HotelState state) {
+  Widget _buildProcessIndicator(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: Opacity(
-          opacity: state.loading ? 1.0 : 00,
+          opacity: _controller.hotelLoading.value ? 1.0 : 00,
           child: const CircularProgressIndicator(),
         ),
       ),

@@ -1,45 +1,26 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_controller.dart';
-import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_state.dart';
 import 'package:travel_guide_app/utils/hex_color_ext.dart';
 import 'package:travel_guide_app/utils/widgets/authentication_text_field.dart';
 import 'package:travel_guide_app/gen/assets.gen.dart';
 
 import '../../../../utils/widgets/gradient_text.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  late final LoginController _controller;
-
-  LoginController _createController() {
-    _controller = LoginController();
-    return _controller;
-  }
+  final LoginController _controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _createController(),
-      child: BlocBuilder<LoginController, LoginState>(
-        builder: (context, state) {
-          return Scaffold(
-            body: _buildUI(context, state),
-            //bottomNavigationBar: _buildBottomUI(context, state),
-          );
-        },
-      ),
+    return Scaffold(
+      body: _buildUI(context),
     );
   }
 
-  Widget _buildUI(BuildContext context, LoginState state) {
+  Widget _buildUI(BuildContext context) {
     return SafeArea(
       child: Container(
         alignment: Alignment.center,
@@ -49,31 +30,31 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildLoginTitle(context, state),
+              _buildLoginTitle(context),
               const SizedBox(
                 height: 10,
               ),
               Form(
-                key: _controller.formKey,
+                  key: _controller.formKey,
                   child: Column(children: [
-                AuthenticationTextField(
-                  editingController: _controller.usernameTextController,
-                  validator: _controller.validateUsername,
-                  labelText: 'Username',
-                  icon: Icon(Icons.person_outline,
-                      color: Theme.of(context).primaryColor),
-                ),
-                AuthenticationTextField(
-                  editingController: _controller.passwordTextController,
-                  validator:_controller.validatePassword,
-                  labelText: 'Password',
-                  obscureText: true,
-                  icon: Icon(Icons.lock_outline,
-                      color: Theme.of(context).primaryColor),
-                ),
-              ])),
-              _buildForgetPasswordText(context, state),
-              _buildLoginButton(context, state),
+                    AuthenticationTextField(
+                      editingController: _controller.usernameTextController,
+                      validator: _controller.validateUsername,
+                      labelText: 'Username',
+                      icon: Icon(Icons.person_outline,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                    AuthenticationTextField(
+                      editingController: _controller.passwordTextController,
+                      validator: _controller.validatePassword,
+                      labelText: 'Password',
+                      obscureText: true,
+                      icon: Icon(Icons.lock_outline,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                  ])),
+              _buildForgetPasswordText(context),
+              _buildLoginButton(context),
               Text(
                 'Or sign in with',
                 style:
@@ -96,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              _buildRegisterPrompt(context, state)
+              _buildRegisterPrompt(context)
             ],
           ),
         ),
@@ -104,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildForgetPasswordText(BuildContext context, LoginState state) {
+  Widget _buildForgetPasswordText(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -120,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context, LoginState state) {
+  Widget _buildLoginButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: SizedBox(
@@ -144,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginTitle(BuildContext context, LoginState state) {
+  Widget _buildLoginTitle(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -188,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  Widget _buildRegisterPrompt(BuildContext context, LoginState state) {
+  Widget _buildRegisterPrompt(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: RichText(
@@ -207,7 +188,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _navigateForgetPassword() {}
+  void _navigateRegister() {
 
-  void _navigateRegister() {}
+  }
+
+  void _navigateForgetPassword() {
+
+  }
 }

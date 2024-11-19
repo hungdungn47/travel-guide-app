@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_state.dart';
+import 'package:get/get.dart';
 
-class LoginController extends Cubit<LoginState> {
-  LoginController() : super(const LoginState()) {
-    _init();
-  }
-
+class LoginController extends GetxController{
   late TextEditingController _usernameTextController;
   late GlobalKey<FormState> _formKey;
   late TextEditingController _passwordTextController;
 
-  void _init() {
+  @override
+  void onInit() {
+    super.onInit();
+
     _usernameTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _formKey = GlobalKey<FormState>();

@@ -1,19 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:travel_guide_app/presentation/screens/Authentication/Register/register_state.dart';
+import 'package:get/get.dart';
 
-class RegisterController extends Cubit<RegisterState> {
-  RegisterController() : super(const RegisterState()) {
-    _init();
-  }
-
+class RegisterController extends GetxController {
   late GlobalKey<FormState> _formKey;
   late TextEditingController _usernameTextController;
   late TextEditingController _passwordTextController;
   late TextEditingController _passwordConfirmationTextController;
   late TextEditingController _emailTextController;
 
-  void _init() {
+  @override
+  void onInit() {
+    super.onInit();
     _usernameTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _passwordConfirmationTextController = TextEditingController();

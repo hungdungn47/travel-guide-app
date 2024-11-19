@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       initialRoute: '/login',
       getPages: [
-        GetPage(name: '/login', page: () => const LoginPage()),
+        GetPage(name: '/login', page: () => HotelPage()),
         GetPage(name: '/home', page: () => PageWrapper())
       ],
       home: PageWrapper(),
