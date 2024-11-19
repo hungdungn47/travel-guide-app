@@ -100,17 +100,15 @@ class Home extends StatelessWidget {
     return Container(
       child: Column(
         children: [
+          const SizedBox(height: 16,),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => SearchPage()),
-                // );
                 HelperFunctions.navigateToScreen(screen: SearchPage());
               },
-              child: CustomSearchBar(),
+              child: const AbsorbPointer(child: CustomSearchBar()),
             ),
           ),
           const SizedBox(height: 4),
@@ -124,8 +122,8 @@ class Home extends StatelessWidget {
   }
 
   Widget buildHomeSlider(BuildContext context) {
-    List<Destination> destinations = _controller.destinationOverview;
-    List<DestinationImageOverview> imagesUrl = getImageUrlFromDestinationList(destinations);
+    List<Festival> destinations = _controller.destinationOverview;
+    List<DestinationImageOverview> imagesUrl = getImageUrlFromFestivalList(destinations);
     return Padding(
       padding: const EdgeInsets.all(18),
       child: Column(
@@ -162,7 +160,7 @@ class Home extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: destinations
-                  .map((d) => buildScrollImageItem(context,d.imageUrls[0], d.name, d.id))
+                  .map((d) => buildScrollImageItem(context,d.imageUrl[0], d.name, d.id))
                   .toList(),
             ),
           ),
@@ -171,7 +169,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget buildScrollImageItem(BuildContext context,String imgUrl, String description, int id) {
+  Widget buildScrollImageItem(BuildContext context,String imgUrl, String description, String id) {
     return GestureDetector(
       onTap: () {
         // Navigator.push(
@@ -210,7 +208,13 @@ class Home extends StatelessWidget {
   }
 
   List<DestinationImageOverview> getImageUrlFromDestinationList(List<Destination> destinations) {
-    return destinations.map((d) => DestinationImageOverview(id: d.id, imageUrl: d.imageUrls[0])).toList();
+    return destinations.map((d) => DestinationImageOverview(id: d.id, imageUrl: d.imageUrl[0])).toList();
+  }
+
+  List<DestinationImageOverview> getImageUrlFromFestivalList(List<Festival> destinations) {
+    return destinations
+        .map((d) => DestinationImageOverview(id: d.destinationId, imageUrl: d.imageUrl))
+        .toList();
   }
 }
 

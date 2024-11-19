@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/routes/get_transition_mixin.dart';
 import 'package:travel_guide_app/main.dart';
 
+import '../../components/search_bar.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -21,20 +23,25 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-            ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       hintText: 'Search',
+          //       prefixIcon: Icon(Icons.search),
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(30),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // const CustomSearchBar(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: CustomSearchBar(),
           ),
           Padding(
-            padding: EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.only(right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -227,7 +234,7 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
                       });
                     }),
               ],
-            )  
+            )
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20),

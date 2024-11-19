@@ -7,7 +7,7 @@ import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_co
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_details.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 
-import '../../components/loading_animation.dart';
+import '../../components/loading.dart';
 
 class TourRecommendationPage extends StatelessWidget {
   TourRecommendationPage({Key? key}) : super(key: key);

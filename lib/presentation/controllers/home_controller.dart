@@ -7,7 +7,7 @@ import '../../utils/index.dart';
 class HomeController extends GetxController {
   final apiService = sl.get<ApiService>();
 
-  var destinationOverview = <Destination>[].obs;
+  var destinationOverview = <Festival>[].obs;
   var destinationRecommendation = <Destination>[].obs;
 
   @override
@@ -18,7 +18,6 @@ class HomeController extends GetxController {
 
   Future<void> fetchDestinations() async {
     try {
-      await Future.delayed(const Duration(seconds: 5));
       final destinationsOverview = await apiService.getFestivalDestination();
       final destinationsRecommendation = await apiService.getRecommendationDestination();
       changeDestinationOverview(destinationsOverview);
@@ -28,7 +27,7 @@ class HomeController extends GetxController {
     }
   }
 
-  void changeDestinationOverview(List<Destination> destinations) {
+  void changeDestinationOverview(List<Festival> destinations) {
     destinationOverview.assignAll(destinations);
   }
 
