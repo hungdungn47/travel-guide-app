@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_controller.dart';
-import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_state.dart';
-import 'package:travel_guide_app/utils/local_storage.dart';
 import 'package:travel_guide_app/utils/widgets/gradient_text.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -17,6 +14,7 @@ class HotelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               title: const Text("Hotel", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),),
               centerTitle: true,
