@@ -127,7 +127,7 @@ class DestinationDetailsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(width: 32),
+            const SizedBox(width: 16),
             IconButton(
               onPressed: () {
                 // HelperFunctions.navigateToScreen(screen: Hotel());
