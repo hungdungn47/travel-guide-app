@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../../../utils/helper_functions.dart';
+import '../../page_wrapper.dart';
+
 class LoginController extends GetxController{
   late TextEditingController _usernameTextController;
   late GlobalKey<FormState> _formKey;
@@ -48,5 +51,7 @@ class LoginController extends GetxController{
     }
   }
 
-  void _navigateHome() {}
+  void _navigateHome() {
+    HelperFunctions.navigateToScreen(screen: PageWrapper());
+  }
 }

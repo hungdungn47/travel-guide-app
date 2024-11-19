@@ -1,0 +1,72 @@
+[
+  {
+    "destination": "Paris",
+    "location": "France",
+    "budgetPerPerson": 1200,
+    "time": "7 days, 6 nights",
+    "travelCompany": "Globetrotter Travels"
+  },
+  {
+    "destination": "Kyoto",
+    "location": "Japan",
+    "budgetPerPerson": 1500,
+    "time": "5 days, 4 nights",
+    "travelCompany": "ExploreAsia"
+  },
+  {
+    "destination": "Cairo",
+    "location": "Egypt",
+    "budgetPerPerson": 800,
+    "time": "6 days, 5 nights",
+    "travelCompany": "Desert Adventures"
+  },
+  {
+    "destination": "Rome",
+    "location": "Italy",
+    "budgetPerPerson": 1100,
+    "time": "7 days, 6 nights",
+    "travelCompany": "European Escapes"
+  },
+  {
+    "destination": "Maui",
+    "location": "Hawaii, USA",
+    "budgetPerPerson": 2000,
+    "time": "5 days, 4 nights",
+    "travelCompany": "Island Getaways"
+  },
+  {
+    "destination": "Cape Town",
+    "location": "South Africa",
+    "budgetPerPerson": 1300,
+    "time": "8 days, 7 nights",
+    "travelCompany": "Safari Journeys"
+  },
+  {
+    "destination": "Sydney",
+    "location": "Australia",
+    "budgetPerPerson": 1600,
+    "time": "6 days, 5 nights",
+    "travelCompany": "Down Under Adventures"
+  },
+  {
+    "destination": "New York City",
+    "location": "USA",
+    "budgetPerPerson": 900,
+    "time": "4 days, 3 nights",
+    "travelCompany": "Big Apple Tours"
+  },
+  {
+    "destination": "Bangkok",
+    "location": "Thailand",
+    "budgetPerPerson": 700,
+    "time": "5 days, 4 nights",
+    "travelCompany": "Asian Expeditions"
+  },
+  {
+    "destination": "Santorini",
+    "location": "Greece",
+    "budgetPerPerson": 1400,
+    "time": "7 days, 6 nights",
+    "travelCompany": "Mediterranean Dreams"
+  }
+]

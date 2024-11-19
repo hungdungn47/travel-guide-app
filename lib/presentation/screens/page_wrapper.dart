@@ -23,6 +23,8 @@ class PageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 238, 252, 250),
+      // backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Obx(() => IndexedStack(
             index: _navigationController.selectedIndex.value,

@@ -6,7 +6,10 @@ import 'package:travel_guide_app/utils/hex_color_ext.dart';
 import 'package:travel_guide_app/utils/widgets/authentication_text_field.dart';
 import 'package:travel_guide_app/gen/assets.gen.dart';
 
+import '../../../../utils/helper_functions.dart';
 import '../../../../utils/widgets/gradient_text.dart';
+import '../ForgetPassword/forget_password_page.dart';
+import '../Register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -188,11 +191,11 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void _navigateRegister() {
-
+  void _navigateForgetPassword() {
+    HelperFunctions.navigateToScreen(screen: const ForgetPasswordPage());
   }
 
-  void _navigateForgetPassword() {
-
+  void _navigateRegister() {
+    HelperFunctions.navigateToScreen(screen: RegisterPage());
   }
 }

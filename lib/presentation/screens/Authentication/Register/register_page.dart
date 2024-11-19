@@ -2,10 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Register/register_controller.dart';
+import 'package:travel_guide_app/utils/helper_functions.dart';
 import 'package:travel_guide_app/utils/hex_color_ext.dart';
 import 'package:travel_guide_app/utils/widgets/authentication_text_field.dart';
 
 import '../../../../utils/widgets/gradient_text.dart';
+import '../Login/login_page.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -143,6 +145,6 @@ class RegisterPage extends StatelessWidget {
   }
 
   void _navigateLogin() {
-
+    HelperFunctions.navigateToScreen(screen: LoginPage());
   }
 }
