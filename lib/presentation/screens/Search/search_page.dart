@@ -71,9 +71,7 @@ class _DestinationCardState extends State<DestinationCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO: Navigate to the actual destination details page (State management)
-        HelperFunctions.navigateToScreen(
-            screen: DestinationDetailsPage(destinationId: widget.destination.id));
+        HelperFunctions.navigateToDestinationDetail(destinationId: widget.destination.id);
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
