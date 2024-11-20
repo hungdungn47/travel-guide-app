@@ -87,7 +87,9 @@ class RegisterPage extends StatelessWidget {
         width: 180,
         height: 60,
         child: ElevatedButton(
-            onPressed: _controller.register,
+            onPressed: () async {
+              await _controller.register();
+            },
             style: ButtonStyle(
                 shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

@@ -12,11 +12,27 @@ void main() async {
 }
 
 Future<void> setup() async {
-  sl.registerSingleton<ApiService>(ApiServiceImpl.instance);
-  sl.registerSingleton<LocalStorage>(LocalStorage());
+  // final response = await HttpClient.post(
+  //     endPoint: 'api/v1/authenticate',
+  //     body: {
+  //       "username": 'test1223',
+  //       "password": 'test1223'
+  //     }
+  // );
+  // if(response == null) {
+  //   print("Login failed");
+  //   return null;
+  // }
+  // final results = response?['results'] as dynamic;
+  // final String accessToken = results?['jwtToken'] as String;
+  // print(accessToken);
   await GetStorage.init();
-  final localStorage = sl.get<LocalStorage>();
+  sl.registerSingleton<ApiService>(ApiServiceImpl.instance);
+  // sl.registerLazySingleton<LocalStorage>(() => LocalStorage());
+  final localStorage = LocalStorage();
   final accessToken = await localStorage.readData('accessToken');
+
+  print(accessToken);
 
   if(accessToken != null) {
     Config.accessToken = accessToken;
@@ -28,14 +44,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      initialRoute: '/home',
-      getPages: [
-        GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/home', page: () => PageWrapper())
-      ]
-    );
+    return OverlaySupport.global(child: GetMaterialApp(
+        title: 'Flutter Demo',
+        theme: AppTheme.lightTheme,
+        initialRoute: Config.accessToken.isNotEmpty ? '/home' : '/login',
+        getPages: [
+          GetPage(name: '/login', page: () => LoginPage()),
+          GetPage(name: '/home', page: () => PageWrapper())
+        ]
+    ));
   }
 }

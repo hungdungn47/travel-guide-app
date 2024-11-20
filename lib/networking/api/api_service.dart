@@ -10,4 +10,6 @@ abstract class ApiService {
   Future<List<Tour>> getTours();
   Future<Destination?> getDestinationById(String id);
   Future<List<Hotel>> fetchHotels(String destinationId);
+  Future<dynamic> login(String username, String password);
+  Future<Map<String, dynamic>> register(String username, String password, String email);
 }
