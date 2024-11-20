@@ -112,7 +112,9 @@ class LoginPage extends StatelessWidget {
         width: 180,
         height: 60,
         child: ElevatedButton(
-            onPressed: _controller.login,
+            onPressed: () async {
+              await _controller.login();
+            },
             style: ButtonStyle(
                 shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

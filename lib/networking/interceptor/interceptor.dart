@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:travel_guide_app/utils/helper_functions.dart';
 
 import '../config.dart';
 
@@ -17,6 +18,12 @@ class HttpClientWithInterceptor extends http.BaseClient {
       request.headers['Authorization'] = Config.accessToken;
     }
     final response = await _inner.send(request);
+    
+    if(response.statusCode == 401) {
+      HelperFunctions.showMessage('The login session has expired', 2);
+      await Future.delayed(const Duration(seconds: 3));
+      HelperFunctions.navigateToLoginPage();
+    }
     // Intercept response after receiving it
     // print('Response status: ${response.statusCode}');
     // print('Response headers: ${response.headers}');

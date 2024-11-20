@@ -7,23 +7,25 @@ import '../../../gen/assets.gen.dart';
 import 'hotel.dart';
 
 class HotelPage extends StatelessWidget {
-  HotelPage({super.key});
+  final String destinationId;
+  HotelPage({super.key, required this.destinationId});
 
-  final HotelController _controller = Get.put(HotelController());
+  late final HotelController _controller;
 
   @override
   Widget build(BuildContext context) {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              title: const Text("Hotel", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),),
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-            ),
-            extendBodyBehindAppBar: true,
-            body: Obx(() => _buildUI(context)),
-          );
+    _controller = Get.put(HotelController(destinationId: destinationId));
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text("Hotel", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      body: Obx(() => _buildUI(context)),
+    );
   }
 
   Widget _buildUI(BuildContext context) {
@@ -164,6 +166,7 @@ class HotelPage extends StatelessWidget {
 
   Widget _buildHotelEntry(
       BuildContext context, Hotel entry, Animation<double> animation) {
+
     return ScaleTransition(
       key: UniqueKey(),
       scale: CurvedAnimation(parent: animation, curve: Curves.bounceOut),
@@ -234,7 +237,8 @@ class HotelPage extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
                       child: Image.network(
-                        entry.imageUrl,
+                        entry.imageUrl!,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   )),

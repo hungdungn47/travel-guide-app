@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../../networking/api/api_service.dart';
+import '../../../utils/sl.dart';
 import 'hotel.dart';
 
 class HotelController extends GetxController {
@@ -13,11 +15,17 @@ class HotelController extends GetxController {
 
   late ScrollController _sc;
 
+  final apiService = sl.get<ApiService>();
+
+  final String destinationId;
+  HotelController({required this.destinationId});
+
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
   @override
   void onInit() async {
     super.onInit();
+
     _sc = ScrollController();
     _sc.addListener(() async {
       if (_sc.position.pixels == _sc.position.maxScrollExtent) {
@@ -26,9 +34,9 @@ class HotelController extends GetxController {
         }
       }
     });
+
     await getRecommendationLists();
   }
-
 
   ScrollController getScrollController() {
     return _sc;
@@ -106,15 +114,7 @@ class HotelController extends GetxController {
   }
 
   Future<List<Hotel>> _search(String prompt, int startIndex) async {
-    await Future.delayed(const Duration(seconds: 2));
-    List<Hotel> hotels = [];
-    for (int i = 0; i < 10; i++) {
-      hotels.add(Hotel(
-          name: 'Royal Palace',
-          rating: 4.7,
-          location: 'Somewhere in Vietnam',
-          imageUrl: 'https://picsum.photos/200'));
-    }
+    List<Hotel> hotels = await apiService.fetchHotels(destinationId);
     return hotels;
   }
 }
