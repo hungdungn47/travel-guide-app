@@ -76,26 +76,6 @@ class FavoriteDestinationsPage extends StatelessWidget {
   Widget favoriteDestinationsListView(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: TextField(
-            onTapOutside: (event) {
-              print('onTapOutside');
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            decoration: InputDecoration(
-              suffixIcon: Icon(Icons.filter_alt_outlined, size: 30,),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              hintText: 'Filter',
-              hintStyle: TextStyle(fontWeight: FontWeight.w400),
-            ),
-          ),
-        ),
         Expanded(
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
