@@ -16,7 +16,6 @@ class PageWrapper extends StatelessWidget {
   final List<Widget> pages = [
     Home(),
     FavoriteDestinationsPage(),
-    NewsPage(),
     UserProfile()
   ];
   final _inactiveColor = Colors.grey;
@@ -54,13 +53,6 @@ class PageWrapper extends StatelessWidget {
               title: Text(
                 'Favorite',
               ),
-              activeColor: Colors.blue,
-              inactiveColor: _inactiveColor,
-              textAlign: TextAlign.center,
-            ),
-            BottomNavyBarItem(
-              icon: Icon(Icons.newspaper_outlined),
-              title: Text('News'),
               activeColor: Colors.blue,
               inactiveColor: _inactiveColor,
               textAlign: TextAlign.center,
