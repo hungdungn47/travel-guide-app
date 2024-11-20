@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travel_guide_app/presentation/controllers/profile_controller.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/ForgetPassword/forget_password_page.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_page.dart';
 import 'dart:io';
@@ -7,7 +9,9 @@ import 'dart:io';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  UserProfile({Key? key}) : super(key: key);
+
+  // final ProfilePageController _controller = Get.put(ProfilePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -93,13 +97,15 @@ class Username extends StatefulWidget {
 
 class _UsernameState extends State<Username> {
   bool isEditing = false;
-  TextEditingController _controller = TextEditingController();
+  // TextEditingController _controller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _controller.text = 'Sarasa Saionji';
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller.text = 'Sarasa Saionji';
+  // }
+
+  final ProfilePageController _controller = Get.put(ProfilePageController());  
 
   @override
   Widget build(BuildContext context) {
@@ -112,12 +118,10 @@ class _UsernameState extends State<Username> {
               ? Container(
                   width: 200,
                   child: TextField(
-                    controller: _controller,
+                    // controller: _controller,
                     autofocus: true,
                     onSubmitted: (value) {
-                      setState(() {
-                        isEditing = false;
-                      });
+                      _controller.editUsername(value, '');
                       showSnackBar(context, "Username changed successfully");
                     },
                   ),
@@ -127,7 +131,7 @@ class _UsernameState extends State<Username> {
                   maxWidth: 200,
                 ),
                 child: Text(
-                    _controller.text,
+                    _controller.name.value,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
               ),

@@ -1,5 +1,6 @@
 import 'package:travel_guide_app/models/Destination.dart';
 import 'package:travel_guide_app/models/Festival.dart';
+import 'package:travel_guide_app/models/User.dart';
 import 'package:travel_guide_app/networking/api/api_service.dart';
 import 'package:travel_guide_app/networking/index.dart';
 
@@ -135,6 +136,100 @@ class ApiServiceImpl implements ApiService {
     return data;
   }
 
+Future<List<Destination>> fetchDataByKeyword(String keyword) async {
+    final response = await HttpClient.get(endPoint: 'api/v1/destinations/getByKeyword', queryParams: {
+      "keyword": keyword,
+    });
+    if (response == null) {
+      print('No data found.');
+    }
+    final results = response?['results'] as List<dynamic>?;
+    List<Destination> data = [];
+    for(int i = 0; i < results!.length; i++) {
+      if(i<=2) {
+        continue;
+      }
+      final destinationJson = results[i];
+      if (destinationJson == null) {
+        print('No destination found.');
+        continue;
+      }
+      final destination = Destination.fromJson(destinationJson);
+      data.add(destination);
+    }
+
+    return data;
+  }
+
+  Future<List<String>> fetchKeyword(String prompt) async {
+    final response = await HttpClient.get(endPoint: 'api/v1/destinations/getRecommendations', queryParams: {
+      "keyword": prompt,
+    });
+    if (response == null) {
+      print('No data found.');
+    }
+    final results = response?['results'] as List<String>;
+
+    return results;
+  }
+
+  Future<List<Destination>> filterData({String? type, String? city, String? ratingRange}) async {
+    Map<String, String> queryParams = {};
+    if(type != null) {
+      queryParams["type"] = type;
+    }
+
+    if(city != null) {
+      queryParams["city"] = city;
+    }
+
+    if(ratingRange != null) {
+      queryParams["ratingRange"] = ratingRange;
+    }
+
+    final response = await HttpClient.get(endPoint: 'api/v1/destinations/filter', queryParams: queryParams);
+    if (response == null) {
+      print('No data found.');
+    }
+    final results = response?['results'] as List<dynamic>?;
+    List<Destination> data = [];
+    for(int i = 0; i < results!.length; i++) {
+      if(i<=2) {
+        continue;
+      }
+      final destinationJson = results[i];
+      if (destinationJson == null) {
+        print('No destination found.');
+        continue;
+      }
+      final destination = Destination.fromJson(destinationJson);
+      data.add(destination);
+    }
+
+    return data;
+  }
+
+  Future<void> apiEditUsername(String firstName, String lastName) async {
+    final response = await HttpClient.put(endPoint: 'api/customer/v1/edit', body: {
+      "firstName": firstName,
+      "lastName": lastName,
+    });
+    // if (response == null) {
+    //   print('No data found.');
+    // }
+    // final results = response?['results'] as String;
+  }
+
+  Future<String> fetchUsername() async {
+    final response = await HttpClient.get(endPoint: 'api/customer/v1');
+    if (response == null) {
+      print('No data found.');
+    }
+    final results = response?['results'] as dynamic;
+    User user = User.fromJson(results);
+    return user.firstName + user.lastName;
+  }
+
   Future<List<Festival>> fetchFestival() async {
     final response = await HttpClient.get(endPoint: 'api/v1/festivals');
     if (response == null) {
@@ -174,4 +269,38 @@ class ApiServiceImpl implements ApiService {
     final des = Destination.fromJson(results);
     return des;
   }
+  
+  @override
+  Future<List<Destination>> filterDestinations({String? type, String? city, String? ratingRange}) async {
+    return await filterData(type: type, city: city, ratingRange: ratingRange);
+  }
+  
+  @override
+  Future<List<Destination>> getAllDestinations() async{
+    return await fetchData();
+  }
+  
+  @override
+  Future<List<Destination>> getDestinationsByKeyword(String keyword) async {
+    return await fetchDataByKeyword(keyword);
+  }
+  
+  @override
+  Future<List<String>> getKeyword(String prompt) {
+    return fetchKeyword(prompt);
+  }
+  
+  @override
+  Future<void> editUsername(String firstName, String lastName) async{
+    // TODO: implement editUsername
+    await apiEditUsername(firstName, lastName);
+  }
+  
+  @override
+  Future<String> getUsername() {
+    // TODO: implement getUsername
+    return fetchUsername();
+  }
+
+  
 }
