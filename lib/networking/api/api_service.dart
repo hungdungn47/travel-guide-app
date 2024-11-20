@@ -8,6 +8,7 @@ abstract class ApiService {
   Future<List<Destination>> getFavoriteDestinations();
   Future<List<Destination>> getAllDestinations();
   Future<List<Destination>> getDestinationsByKeyword(String keyword);
+  Future<List<String>> getKeywordHotel(String prompt, String destinationId);
   Future<List<String>> getKeyword(String prompt);
   Future<List<Destination>> filterDestinations({String? type, String? city, String? ratingRange});
   Future<void> editUsername(String firstName, String lastName);

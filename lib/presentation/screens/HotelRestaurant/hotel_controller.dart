@@ -108,6 +108,10 @@ class HotelController extends GetxController {
     hotelLoading.value = false;
   }
 
+  Future<List<String>> getSuggestions(String prompt, String destinationId) async {
+    return await apiService.getKeywordHotel(prompt, destinationId);
+  }
+
   Future<List<Hotel>> _search(String prompt, int startIndex) async {
     List<Hotel> hotels = await apiService.fetchHotels(destinationId);
     return hotels;

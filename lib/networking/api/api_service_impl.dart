@@ -112,6 +112,28 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
     return recommendations;
   }
 
+  Future<List<String>> fetchKeywordHotel(String prompt, String destinationId) async {
+    print(prompt);
+    final response = await HttpClient.get(endPoint: 'api/v1/hotels/getRecommendations', queryParams: {
+      "keyword": prompt,
+      "destinationId": destinationId
+    });
+    if (response == null) {
+      print('No data found.');
+    }
+
+    final results = response?['results'] as List<dynamic>;
+
+    List<String> recommendations = [];
+
+    for (int i = 0; i < results.length; i++) {
+      recommendations.add(results[i]);
+    }
+
+
+    return recommendations;
+  }
+
   Future<List<Destination>> filterData({String? type, String? city, String? ratingRange}) async {
     Map<String, String> queryParams = {};
     if(type != null) {
@@ -304,6 +326,12 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
   Future<List<String>> getKeyword(String prompt) {
     return fetchKeyword(prompt);
   }
+
+  @override
+  Future<List<String>> getKeywordHotel(String prompt, String destinationId) {
+    return fetchKeywordHotel(prompt, destinationId);
+  }
+
 
   @override
   Future<void> editUsername(String firstName, String lastName) async{

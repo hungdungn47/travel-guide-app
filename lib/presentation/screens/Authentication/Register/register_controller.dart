@@ -71,13 +71,18 @@ class RegisterController extends GetxController {
 
   Future<void> register() async {
     try {
-      Map<String, dynamic> r = await apiService.register(_usernameTextController.text, _passwordTextController.text, _emailTextController.text);
-      if(r?['code'] == 200) {
-        HelperFunctions.showMessage(r?['message'] ?? 'Register successfully', 1);
-        await Future.delayed(const Duration(seconds: 3));
-        HelperFunctions.navigateToLoginPage();
-      } else {
-        HelperFunctions.showMessage(r?['message'] ?? 'Error occur', 2);
+      if(_formKey.currentState?.validate() ?? false) {
+        Map<String, dynamic> r = await apiService.register(
+            _usernameTextController.text, _passwordTextController.text,
+            _emailTextController.text);
+        if (r?['code'] == 200) {
+          HelperFunctions.showMessage(
+              r?['message'] ?? 'Register successfully', 1);
+          await Future.delayed(const Duration(seconds: 3));
+          HelperFunctions.navigateToLoginPage();
+        } else {
+          HelperFunctions.showMessage(r?['message'] ?? 'Error occur', 2);
+        }
       }
     } catch (e) {
       print(e);

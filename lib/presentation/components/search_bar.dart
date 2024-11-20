@@ -14,7 +14,7 @@ class CustomSearchBar extends StatelessWidget {
       tag: 'search_box',
       child: Material(
           child: Container(
-            color: Color.fromARGB(255, 238, 252, 250),
+            color: const Color.fromARGB(255, 238, 252, 250),
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
         child: SearchAnchor(
             isFullScreen: false,
@@ -39,7 +39,6 @@ class CustomSearchBar extends StatelessWidget {
                 ),
                 elevation: const WidgetStatePropertyAll(5.0),
                 onSubmitted: (prompt) async {
-                  print("UwU");
                   controller.closeView(prompt);
                   await searchPageController.getDestinationsByKeyword(prompt);
                 },

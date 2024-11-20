@@ -96,6 +96,7 @@ class HotelPage extends StatelessWidget {
   }
 
   Widget _buildSearchBar(BuildContext context) {
+    String searchText = '';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       child: SearchAnchor(
@@ -111,7 +112,7 @@ class HotelPage extends StatelessWidget {
           ),
           builder: (context, controller) {
             return SearchBar(
-              controller: searchController,
+              controller: controller,
               hintText: 'Find your next destination',
               hintStyle: WidgetStateProperty.all(
                 const TextStyle(
@@ -121,7 +122,6 @@ class HotelPage extends StatelessWidget {
               ),
               elevation: const WidgetStatePropertyAll(5.0),
               onSubmitted: (prompt) async {
-                print("WTF is happening");
                 controller.closeView(prompt);
                 await _controller.updateHotelLists(prompt);
               },
@@ -132,7 +132,6 @@ class HotelPage extends StatelessWidget {
                 controller.openView();
               },
               onChanged: (_) {
-                print("OwO");
                 controller.openView();
               },
               leading: const Padding(
@@ -149,8 +148,7 @@ class HotelPage extends StatelessWidget {
           },
           suggestionsBuilder:
               (BuildContext context, SearchController controller) async {
-            //TODO: Update?
-            List<String> suggestions = [];
+            List<String> suggestions = await _controller.getSuggestions(controller.text, destinationId);
             return List<ListTile>.generate(suggestions.length, (int index) {
               return ListTile(
                 title: Text(

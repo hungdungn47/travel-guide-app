@@ -46,11 +46,14 @@ class LoginController extends GetxController{
 
   Future<void> login() async {
     try{
-      await apiService.login(_usernameTextController.text, _passwordTextController.text);
-      print('login sucessfully');
-      HelperFunctions.showMessage('Login successfully', 1);
-      await Future.delayed(const Duration(seconds: 3));
-      HelperFunctions.navigateToHomePage();
+      if(_formKey.currentState?.validate() ?? false) {
+        await apiService.login(
+            _usernameTextController.text, _passwordTextController.text);
+        print('login sucessfully');
+        HelperFunctions.showMessage('Login successfully', 1);
+        await Future.delayed(const Duration(seconds: 3));
+        HelperFunctions.navigateToHomePage();
+      }
     } catch (e) {
       HelperFunctions.showMessage(e.toString().replaceFirst('Exception: ', ''), 2);
     }
