@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:travel_guide_app/presentation/controllers/favorite_destinations_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
 import 'package:travel_guide_app/presentation/screens/FavoriteDestinations/favorite_destinations_page.dart';
 import 'package:travel_guide_app/presentation/screens/Home/home.dart';
@@ -13,6 +14,8 @@ class PageWrapper extends StatelessWidget {
   PageWrapper({super.key});
 
   final NavigationController _navigationController = Get.put(NavigationController());
+  final FavoriteDestinationsController _favoriteDestinationsController = Get.put(FavoriteDestinationsController());
+
   final List<Widget> pages = [
     Home(),
     FavoriteDestinationsPage(),

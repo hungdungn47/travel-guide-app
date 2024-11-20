@@ -29,6 +29,40 @@ class FavoriteDestinationsController extends GetxController {
     favoriteDestinations.assignAll(destinations);
   }
 
+  void addFavoriteDestination(Destination destination) {
+    if(isFavorite(destination)) {
+      return;
+    }
+    favoriteDestinations.add(destination);
+    Get.snackbar(
+      'Loved destination!', '${destination.name} has been added to your favorite list!',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.white,
+      margin: const EdgeInsets.only(bottom: 80),
+      overlayBlur: 2,
+      // dismissDirection: DismissDirection.down
+    );
+  }
+
+  void removeFavoriteDestination(Destination destinationToRemove) {
+    if(!isFavorite(destinationToRemove)) {
+      return;
+    }
+    favoriteDestinations.removeWhere((destination) => destination.id == destinationToRemove.id);
+    Get.snackbar(
+      'Unliked destination!', '${destinationToRemove.name} has been removed from your favorite list!',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.white,
+      overlayBlur: 2,
+      margin: const EdgeInsets.only(bottom: 80),
+      // dismissDirection: DismissDirection.down
+    );
+  }
+
+  bool isFavorite(Destination destination) {
+    return favoriteDestinations.map((destination) => destination.id).contains(destination.id);
+  }
+
   void toggleViewMode() {
     isViewModeCarousel.value = !(isViewModeCarousel.value);
   }

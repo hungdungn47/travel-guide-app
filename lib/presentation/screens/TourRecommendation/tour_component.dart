@@ -8,7 +8,6 @@ class TourComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 135,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -25,7 +24,7 @@ class TourComponent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.only(top: 12, left: 12, bottom: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,16 +37,21 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/location_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    Text(tour.location, style: TextStyle(
-                      fontWeight: FontWeight.w400
-                    ),),
+                    Container(
+                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 24 - 135 - 12 - 16 - 10),
+                      child: Text(tour.location, style: const TextStyle(
+                        fontWeight: FontWeight.w400
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.fade,),
+                    ),
                   ],
                 ),
                 Row(
                   children: [
                     Image.asset('assets/icons/time_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    Text('${tour.days} days - ${tour.nights} night', style: TextStyle(
+                    Text('${tour.days} days - ${tour.nights} night', style: const TextStyle(
                         fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -56,7 +60,7 @@ class TourComponent extends StatelessWidget {
                   children: [
                     Image.asset('assets/icons/price_tag_icon.png', height: 16, width: 16,),
                     const SizedBox(width: 10),
-                    Text('${tour.price} \$', style: TextStyle(
+                    Text('${tour.price} \$', style: const TextStyle(
                         fontWeight: FontWeight.w400
                     ),),
                   ],
@@ -65,7 +69,7 @@ class TourComponent extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 140,
+            width: 130,
             height: 135,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),

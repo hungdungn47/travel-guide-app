@@ -11,7 +11,7 @@ import '../../components/loading.dart';
 
 class FavoriteDestinationsPage extends StatelessWidget {
   FavoriteDestinationsPage({Key? key}) : super(key: key);
-  final FavoriteDestinationsController _controller = Get.put(FavoriteDestinationsController());
+  final FavoriteDestinationsController _controller = Get.find<FavoriteDestinationsController>();
   final DestinationController destinationController = Get.put(DestinationController());
   @override
   Widget build(BuildContext context) {
@@ -40,10 +40,29 @@ class FavoriteDestinationsPage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.connectionState == ConnectionState.done) {
             return Obx(() {
-              if(_controller.isViewModeCarousel.value) {
-                    return favoriteDestinationCarouselView(context);
+              if(_controller.favoriteDestinations.isNotEmpty) {
+                print('In favorite des page: ${_controller.favoriteDestinations}');
+                if(_controller.isViewModeCarousel.value) {
+                  return favoriteDestinationCarouselView(context);
+                } else {
+                  return favoriteDestinationsListView(context);
+                }
               } else {
-                return favoriteDestinationsListView(context);
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/icons/empty_icon.png',
+                        height: 200,
+                        width: 300,
+                      ),
+                      const SizedBox(height: 50),
+                      Text('Your favorite destinations list is empty!', style: Theme.of(context).textTheme.titleSmall,),
+                    ],
+                  ),
+                );
               }
             });
           } else {
@@ -57,26 +76,6 @@ class FavoriteDestinationsPage extends StatelessWidget {
   Widget favoriteDestinationsListView(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: TextField(
-            onTapOutside: (event) {
-              print('onTapOutside');
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            decoration: InputDecoration(
-              suffixIcon: Icon(Icons.filter_alt_outlined, size: 30,),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
-              ),
-              hintText: 'Filter',
-              hintStyle: TextStyle(fontWeight: FontWeight.w400),
-            ),
-          ),
-        ),
         Expanded(
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
@@ -183,8 +182,9 @@ class FavoriteDestinationsPage extends StatelessWidget {
   }
 
   Widget favoriteDestinationCarouselView(BuildContext context) {
-    return CarouselSlider(
+    return Obx(() => CarouselSlider(
       options: CarouselOptions(
+          enableInfiniteScroll: false,
           enlargeCenterPage: true,
           enlargeFactor: 0.3,
           height: MediaQuery.of(context).size.height
@@ -235,24 +235,10 @@ class FavoriteDestinationsPage extends StatelessWidget {
                           child: Text('Details')
                       ),
                       const SizedBox(width: 10),
-                      // OutlinedButton(
-                      //     style: OutlinedButton.styleFrom(
-                      //       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                      //       textStyle: TextStyle(fontSize: 20),
-                      //       foregroundColor: Colors.red, // Sets the text color
-                      //       side: const BorderSide(
-                      //         color: Colors.red,
-                      //         width: 2, // Sets the border width
-                      //       ),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(8),
-                      //       ),
-                      //     ),
-                      //     onPressed: () {},
-                      //     child: Text('Unlike')
-                      // )
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _controller.removeFavoriteDestination(destination);
+                          },
                           icon: Icon(
                             Icons.favorite,
                             color: Colors.red.withOpacity(0.6),
@@ -267,6 +253,6 @@ class FavoriteDestinationsPage extends StatelessWidget {
           );
         });
       }).toList(),
-    );
+    ));
   }
 }
