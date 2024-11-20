@@ -100,9 +100,11 @@ class Home extends StatelessWidget {
     return Container(
       child: Column(
         children: [
+          const SizedBox(height: 16,),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 // Navigator.push(
                 //   context,
@@ -110,7 +112,7 @@ class Home extends StatelessWidget {
                 // );
                 HelperFunctions.navigateToScreen(screen: SearchPage());
               },
-              child: CustomSearchBar(),
+              child: const AbsorbPointer(child: CustomSearchBar()),
             ),
           ),
           const SizedBox(height: 4),
