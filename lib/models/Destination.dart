@@ -15,11 +15,11 @@ class Destination {
     return Destination(
       id: json['id'],
       name: json['name'],
-      description: json['description'],
-      culturalValue: json['culturalValue'],
-      imageUrl: List<String>.from(json['imageUrl']),
+      description: json['description'] ?? '',
+      culturalValue: json['culturalValue'] ?? '',
+      imageUrl: List<String>.from(json['imageUrl'] ?? ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm9H1Z2CiFWMZsNPqvpQlh86ZyBoNkUe2xvQ&s']),
       city: json['city'],
-      location: json['location'],
+      location: json['location'] ?? '',
       rating: json['rating'],
       type: json['type'],
     );

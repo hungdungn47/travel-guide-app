@@ -14,19 +14,21 @@ import '../../components/search_bar.dart';
 class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
 
-  final SearchPageController _controller = Get.put(SearchPageController());
+  final SearchPageController _controller = Get.find<SearchPageController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 238, 252, 250),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 238, 252, 250),
         centerTitle: true,
         title: Text('Search'),
       ),
       body: Obx(
         () => Column(
           children: [
-            _buildSearchBar(context),
+            CustomSearchBar(searchPageController: _controller,),
             const Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Divider(
@@ -50,86 +52,6 @@ class SearchPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildSearchBar(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-      child: SearchAnchor(
-          isFullScreen: false,
-          headerTextStyle: const TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
-          ),
-          viewElevation: 5.0,
-          viewConstraints: const BoxConstraints(
-            minHeight: 100,
-            maxHeight: 300,
-          ),
-          builder: (context, controller) {
-            return SearchBar(
-              controller: controller,
-              hintText: 'Find your next destination',
-              hintStyle: WidgetStateProperty.all(
-                const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              elevation: const WidgetStatePropertyAll(5.0),
-              onSubmitted: (prompt) async {
-                await _controller.getDestinationsByKeyword(prompt);
-              },
-              textStyle: WidgetStateProperty.all(
-                const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
-              ),
-              onTap: () {
-                controller.openView();
-              },
-              onChanged: (_) {
-                controller.openView();
-              },
-              leading: const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Icon(Icons.search),
-              ),
-              trailing: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.filter_alt_outlined),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return BottomModalMenu(
-                            controller: _controller,
-                          );
-                        },
-                        showDragHandle: true);
-                  },
-                ),
-              ],
-            );
-          },
-          suggestionsBuilder:
-              (BuildContext context, SearchController controller) async {
-            List<String> suggestions =
-                await _controller.getKeyword(controller.text);
-            return List<ListTile>.generate(suggestions.length, (int index) {
-              return ListTile(
-                title: Text(
-                  suggestions[index],
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w400),
-                ),
-                onTap: () async {
-                  controller.closeView(suggestions[index]);
-                  await _controller
-                      .getDestinationsByKeyword(suggestions[index]);
-                },
-              );
-            });
-          }),
-    );
-  }
 }
 
 class DestinationCard extends StatefulWidget {
@@ -151,7 +73,7 @@ class _DestinationCardState extends State<DestinationCard> {
       onTap: () {
         // TODO: Navigate to the actual destination details page (State management)
         HelperFunctions.navigateToScreen(
-            screen: DestinationDetailsPage(destinationId: "1"));
+            screen: DestinationDetailsPage(destinationId: widget.destination.id));
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -246,92 +168,94 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                'Filter',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  'Filter',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                'City/Province:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                Text(
+                  'City/Province:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              DropdownBox(
-                title: city,
-                options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
-                onSelected: (value) {
-                  setState(() {
-                    city = value;
-                  });
-                },
-              ),
-              Text(
-                'Type of Travel:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                DropdownBox(
+                  title: city,
+                  options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
+                  onSelected: (value) {
+                    setState(() {
+                      city = value;
+                    });
+                  },
                 ),
-              ),
-              Padding(
+                Text(
+                  'Type of Travel:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('Cultrue & History')),
+                        Checkbox(
+                            value: isCulture,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isCulture = value!;
+                              });
+                            }),
+                      ],
+                    )),
+                Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Row(
                     children: [
-                      Expanded(child: Text('Cultrue & History')),
+                      Expanded(child: Text('Leisure & Relaxation')),
                       Checkbox(
-                          value: isCulture,
+                          value: isLeisure,
                           onChanged: (bool? value) {
                             setState(() {
-                              isCulture = value!;
+                              isLeisure = value!;
                             });
                           }),
                     ],
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    Expanded(child: Text('Leisure & Relaxation')),
-                    Checkbox(
-                        value: isLeisure,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isLeisure = value!;
-                          });
-                        }),
-                  ],
+                  ),
                 ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      Expanded(child: Text('Adventure')),
-                      Checkbox(
-                          value: isAdventure,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isAdventure = value!;
-                            });
-                          }),
-                    ],
-                  )),
-              ElevatedButton(
-                onPressed: () {
-                  widget.controller.fetchSearchResults();
-                },
-                child: Text('Apply'),
-              ),
-            ],
+                Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('Adventure')),
+                        Checkbox(
+                            value: isAdventure,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isAdventure = value!;
+                              });
+                            }),
+                      ],
+                    )),
+                ElevatedButton(
+                  onPressed: () {
+                    widget.controller.fetchSearchResults();
+                    Navigator.pop(context);
+                  },
+                  child: Text('Apply',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 }

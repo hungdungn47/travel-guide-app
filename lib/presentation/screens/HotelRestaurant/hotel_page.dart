@@ -8,6 +8,7 @@ import 'hotel.dart';
 
 class HotelPage extends StatelessWidget {
   final String destinationId;
+  final TextEditingController searchController = TextEditingController();
   HotelPage({super.key, required this.destinationId});
 
   late final HotelController _controller;
@@ -110,7 +111,7 @@ class HotelPage extends StatelessWidget {
           ),
           builder: (context, controller) {
             return SearchBar(
-              controller: controller,
+              controller: searchController,
               hintText: 'Find your next destination',
               hintStyle: WidgetStateProperty.all(
                 const TextStyle(
@@ -120,6 +121,8 @@ class HotelPage extends StatelessWidget {
               ),
               elevation: const WidgetStatePropertyAll(5.0),
               onSubmitted: (prompt) async {
+                print("WTF is happening");
+                controller.closeView(prompt);
                 await _controller.updateHotelLists(prompt);
               },
               textStyle: WidgetStateProperty.all(
@@ -129,6 +132,7 @@ class HotelPage extends StatelessWidget {
                 controller.openView();
               },
               onChanged: (_) {
+                print("OwO");
                 controller.openView();
               },
               leading: const Padding(
@@ -145,8 +149,8 @@ class HotelPage extends StatelessWidget {
           },
           suggestionsBuilder:
               (BuildContext context, SearchController controller) async {
-            List<String> suggestions =
-                await _controller.getSuggestion(controller.text);
+            //TODO: Update?
+            List<String> suggestions = [];
             return List<ListTile>.generate(suggestions.length, (int index) {
               return ListTile(
                 title: Text(

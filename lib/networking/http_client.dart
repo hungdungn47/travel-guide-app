@@ -86,12 +86,20 @@ class HttpClient {
   }
 
   static Future<JSON?> put(
-      {required String endPoint, JSON? queryParams, Object? body}) async {
+      {required String endPoint, JSON? queryParams, Object? body, String contentType = 'application/json'}) async {
     final url = Uri.https(baseUrl, endPoint, queryParams);
-    var response = await client.put(url, body: body);
-    if (response.statusCode != 204 && response.statusCode != 200) {
-      return null;
-    }
+    print(body);
+    var response = await client.put(
+      url,
+      headers: {
+        'Content-Type': contentType,
+      },
+      body: json.encode(body),
+    );
+    print(response);
+    // if (response.statusCode != 204 && response.statusCode != 200) {
+    //   return null;
+    // }
 
     final JSON parsed = json.decode(response.body);
     return parsed;

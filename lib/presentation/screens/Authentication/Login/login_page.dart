@@ -199,6 +199,7 @@ class LoginPage extends StatelessWidget {
   }
 
   void _navigateRegister() {
+    print("UwU");
     HelperFunctions.navigateToScreen(screen: RegisterPage());
   }
 }

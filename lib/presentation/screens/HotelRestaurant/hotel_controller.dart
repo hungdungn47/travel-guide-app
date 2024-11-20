@@ -93,11 +93,6 @@ class HotelController extends GetxController {
         hotels.assignAll(updatedHotels);
   }
 
-  Future<List<String>> getSuggestion(String prompt) async {
-    List<String> suggestions = ['This', 'shit', 'is', 'so', 'cool', 'WTF'];
-    return suggestions;
-  }
-
   Future<void> getRecommendationLists() async {
     if (!hotelLoading.value) {
       hotelLoading.value = true;

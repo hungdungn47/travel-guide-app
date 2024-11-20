@@ -109,44 +109,51 @@ class _UsernameState extends State<Username> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 50),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          isEditing
-              ? Container(
-                  width: 200,
-                  child: TextField(
-                    // controller: _controller,
-                    autofocus: true,
-                    onSubmitted: (value) {
-                      _controller.editUsername(value, '');
-                      showSnackBar(context, "Username changed successfully");
-                    },
+    String textFieldValue = '';
+    return Obx(
+        () => Padding(
+        padding: const EdgeInsets.only(left: 50),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            isEditing
+                ? Container(
+                    width: 200,
+                    child: TextField(
+                      // controller: _controller,
+                      autofocus: true,
+                      onSubmitted: (value) async {
+                        await _controller.editUsername(value, '');
+                        showSnackBar(context, "Username changed successfully");
+                      },
+                      onChanged: (value) {
+                        textFieldValue = value;
+                      },
+                    ),
+                  )
+                : Container(
+                  constraints: BoxConstraints(
+                    maxWidth: 200,
                   ),
-                )
-              : Container(
-                constraints: BoxConstraints(
-                  maxWidth: 200,
+                  child: Text(
+                      _controller.name.value,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
                 ),
-                child: Text(
-                    _controller.name.value,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-              ),
-          IconButton(
-            icon: Icon(isEditing ? Icons.check : Icons.edit),
-            onPressed: () {
-              setState(() {
-                isEditing = !isEditing;
+            IconButton(
+              icon: Icon(isEditing ? Icons.check : Icons.edit),
+              onPressed: () async {
+                setState(() {
+                  isEditing = !isEditing;
+                });
                 if (!isEditing) {
+                  await _controller.editUsername(textFieldValue, '');
                   showSnackBar(context, "Username changed successfully");
                 }
-              });
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

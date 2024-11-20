@@ -69,40 +69,47 @@ class ApiServiceImpl implements ApiService {
   }
 
 Future<List<Destination>> fetchDataByKeyword(String keyword) async {
-    final response = await HttpClient.get(endPoint: 'api/v1/destinations/getByKeyword', queryParams: {
-      "keyword": keyword,
-    });
-    if (response == null) {
-      print('No data found.');
+  final response = await HttpClient.get(
+      endPoint: 'api/v1/destinations/getByKeyword', queryParams: {
+    "keyword": keyword
+  });
+  if (response == null) {
+    print('No data found.');
+  }
+  final results = response?['results'] as List<dynamic>?;
+  List<Destination> data = [];
+  for (int i = 0; i < results!.length; i++) {
+    final destinationJson = results[i];
+    if (destinationJson == null) {
+      print('No destinations found.');
+      continue;
     }
-    final results = response?['results'] as List<dynamic>?;
-    List<Destination> data = [];
-    for(int i = 0; i < results!.length; i++) {
-      if(i<=2) {
-        continue;
-      }
-      final destinationJson = results[i];
-      if (destinationJson == null) {
-        print('No destination found.');
-        continue;
-      }
-      final destination = Destination.fromJson(destinationJson);
-      data.add(destination);
-    }
+    final hotel = Destination.fromJson(destinationJson);
+    data.add(hotel);
+  }
 
-    return data;
+  return data;
   }
 
   Future<List<String>> fetchKeyword(String prompt) async {
+    print(prompt);
     final response = await HttpClient.get(endPoint: 'api/v1/destinations/getRecommendations', queryParams: {
       "keyword": prompt,
     });
     if (response == null) {
       print('No data found.');
     }
-    final results = response?['results'] as List<String>;
 
-    return results;
+    final results = response?['results'] as List<dynamic>;
+
+    List<String> recommendations = [];
+
+    for (int i = 0; i < results.length; i++) {
+      recommendations.add(results[i]);
+    }
+
+
+    return recommendations;
   }
 
   Future<List<Destination>> filterData({String? type, String? city, String? ratingRange}) async {
@@ -142,14 +149,12 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
   }
 
   Future<void> apiEditUsername(String firstName, String lastName) async {
-    final response = await HttpClient.put(endPoint: 'api/customer/v1/edit', body: {
+    print(firstName + lastName);
+    await HttpClient.put(endPoint: 'api/customer/v1/edit', body: {
       "firstName": firstName,
-      "lastName": lastName,
-    });
-    // if (response == null) {
-    //   print('No data found.');
-    // }
-    // final results = response?['results'] as String;
+      "lastName": lastName
+    }
+    );
   }
 
   Future<String> fetchUsername() async {
@@ -159,6 +164,8 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
     }
     final results = response?['results'] as dynamic;
     User user = User.fromJson(results);
+    print("UwU");
+    print(user.firstName + user.lastName);
     return user.firstName + user.lastName;
   }
 
@@ -300,15 +307,11 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
 
   @override
   Future<void> editUsername(String firstName, String lastName) async{
-    // TODO: implement editUsername
     await apiEditUsername(firstName, lastName);
   }
 
   @override
   Future<String> getUsername() {
-    // TODO: implement getUsername
     return fetchUsername();
   }
-
-
 }

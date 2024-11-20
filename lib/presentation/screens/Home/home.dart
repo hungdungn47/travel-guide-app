@@ -6,6 +6,7 @@ import 'package:travel_guide_app/presentation/screens/Search/search_page.dart';
 
 import '../../../utils/index.dart';
 import '../../components/loading.dart';
+import '../../controllers/search_controller.dart';
 import '../DestinationDetails/destination_details_page.dart';
 
 class Home extends StatelessWidget {
@@ -13,8 +14,7 @@ class Home extends StatelessWidget {
 
   final HomeController _controller = Get.put(HomeController());
 
-
-
+  final SearchPageController _searchPageController = Get.put(SearchPageController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +108,7 @@ class Home extends StatelessWidget {
               onTap: () {
                 HelperFunctions.navigateToScreen(screen: SearchPage());
               },
-              child: const AbsorbPointer(child: CustomSearchBar()),
+              child: AbsorbPointer(child: CustomSearchBar(searchPageController: _searchPageController,)),
             ),
           ),
           const SizedBox(height: 4),
