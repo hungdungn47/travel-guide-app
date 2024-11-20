@@ -15,7 +15,6 @@ class ToursController extends GetxController {
 
   Future<void> fetchTours() async {
     try {
-      await Future.delayed(const Duration(seconds: 5));
       changeTours(await apiService.getTours());
     } catch (e) {
       print("Error fetching tours: $e");
