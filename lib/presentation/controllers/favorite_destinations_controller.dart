@@ -29,6 +29,24 @@ class FavoriteDestinationsController extends GetxController {
     favoriteDestinations.assignAll(destinations);
   }
 
+  void addFavoriteDestination(Destination destination) {
+    if(isFavorite(destination)) {
+      return;
+    }
+    favoriteDestinations.add(destination);
+  }
+
+  void removeFavoriteDestination(Destination destinationToRemove) {
+    if(!isFavorite(destinationToRemove)) {
+      return;
+    }
+    favoriteDestinations.removeWhere((destination) => destination.id == destinationToRemove.id);
+  }
+
+  bool isFavorite(Destination destination) {
+    return favoriteDestinations.map((destination) => destination.id).contains(destination.id);
+  }
+
   void toggleViewMode() {
     isViewModeCarousel.value = !(isViewModeCarousel.value);
   }

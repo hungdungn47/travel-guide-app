@@ -11,7 +11,7 @@ import '../../components/loading.dart';
 
 class FavoriteDestinationsPage extends StatelessWidget {
   FavoriteDestinationsPage({Key? key}) : super(key: key);
-  final FavoriteDestinationsController _controller = Get.put(FavoriteDestinationsController());
+  final FavoriteDestinationsController _controller = Get.find<FavoriteDestinationsController>();
   final DestinationController destinationController = Get.put(DestinationController());
   @override
   Widget build(BuildContext context) {
@@ -183,7 +183,7 @@ class FavoriteDestinationsPage extends StatelessWidget {
   }
 
   Widget favoriteDestinationCarouselView(BuildContext context) {
-    return CarouselSlider(
+    return Obx(() => CarouselSlider(
       options: CarouselOptions(
           enlargeCenterPage: true,
           enlargeFactor: 0.3,
@@ -235,24 +235,10 @@ class FavoriteDestinationsPage extends StatelessWidget {
                           child: Text('Details')
                       ),
                       const SizedBox(width: 10),
-                      // OutlinedButton(
-                      //     style: OutlinedButton.styleFrom(
-                      //       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                      //       textStyle: TextStyle(fontSize: 20),
-                      //       foregroundColor: Colors.red, // Sets the text color
-                      //       side: const BorderSide(
-                      //         color: Colors.red,
-                      //         width: 2, // Sets the border width
-                      //       ),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(8),
-                      //       ),
-                      //     ),
-                      //     onPressed: () {},
-                      //     child: Text('Unlike')
-                      // )
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _controller.removeFavoriteDestination(destination);
+                          },
                           icon: Icon(
                             Icons.favorite,
                             color: Colors.red.withOpacity(0.6),
@@ -267,6 +253,6 @@ class FavoriteDestinationsPage extends StatelessWidget {
           );
         });
       }).toList(),
-    );
+    ));
   }
 }

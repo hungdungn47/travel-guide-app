@@ -1,6 +1,7 @@
 import 'package:travel_guide_app/presentation/components/loading.dart';
 import 'package:travel_guide_app/presentation/components/slider.dart';
 import 'package:travel_guide_app/presentation/controllers/destination_details_controller.dart';
+import 'package:travel_guide_app/presentation/controllers/favorite_destinations_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/navigation_controller.dart';
 import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_page.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_recommendation_page.dart';
@@ -18,6 +19,7 @@ class DestinationDetailsPage extends StatelessWidget {
       Get.find<NavigationController>();
   final DestinationDetailsController controller =
       Get.put(DestinationDetailsController());
+  // final FavoriteDestinationsController favoriteDestinationsController = Get.find<FavoriteDestinationsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +132,11 @@ class DestinationDetailsPage extends StatelessWidget {
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
-                // HelperFunctions.navigateToScreen(screen: Hotel());
+                if(controller.isFavorite.value == true) {
+                  controller.unlike();
+                } else {
+                  controller.like();
+                }
                 controller.isFavorite.value = !controller.isFavorite.value;
               },
               icon: Obx(
