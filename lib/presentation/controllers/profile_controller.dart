@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:travel_guide_app/networking/api/api_service.dart';
+import 'package:travel_guide_app/utils/index.dart';
 import 'package:travel_guide_app/utils/sl.dart';
 
 class ProfilePageController extends GetxController {
   final apiService = sl.get<ApiService>();
+  final _localStorage = LocalStorage();
 
   var name = ''.obs;
 
@@ -33,5 +35,9 @@ class ProfilePageController extends GetxController {
     } catch (e) {
       print("Error editing username: $e");
     }
+  }
+
+  Future<void> removeAccesToken() async {
+    await _localStorage.clearAll();
   }
 }

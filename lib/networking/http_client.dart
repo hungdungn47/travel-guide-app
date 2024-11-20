@@ -12,7 +12,7 @@ class HttpClient {
   // static final client = RetryClient(http.Client());
   // static final client = HttpClientWithInterceptor(RetryClient(http.Client()));
 
-  static final client = HttpClientWithInterceptor(http.Client());
+  static final client = HttpClientWithInterceptor(RetryClient(http.Client()));
 
 
   static Future<JSON?> get(

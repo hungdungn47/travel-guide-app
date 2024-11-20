@@ -24,8 +24,10 @@ class HttpClientWithInterceptor extends http.BaseClient {
       await Future.delayed(const Duration(seconds: 3));
       HelperFunctions.navigateToLoginPage();
     }
+
+    // print(response)
     // Intercept response after receiving it
-    // print('Response status: ${response.statusCode}');
+    print('Response status: ${response.statusCode}');
     // print('Response headers: ${response.headers}');
     return response;
   }

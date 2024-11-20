@@ -244,7 +244,8 @@ class ChangePasswordButton extends StatelessWidget {
     return FilledButton(
       onPressed: () {
         // TODO: Navigate to change password page
-        HelperFunctions.navigateToScreen(screen: ForgetPasswordPage());
+        // HelperFunctions.navigateToScreen(screen: ForgetPasswordPage());
+        HelperFunctions.navigateToChangePasswordPage();
       },
       child: Text('Change Password'),
     );
@@ -273,8 +274,9 @@ class LogoutButton extends StatelessWidget {
 }
 
 class LogoutDialog extends StatelessWidget {
-  const LogoutDialog({Key? key}) : super(key: key);
+  LogoutDialog({Key? key}) : super(key: key);
 
+  final ProfilePageController _controller = Get.put(ProfilePageController());
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -288,9 +290,10 @@ class LogoutDialog extends StatelessWidget {
           child: Text('Cancel'),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             // TODO: Navigate to login page
-            HelperFunctions.navigateToScreen(screen: LoginPage());
+            await _controller.removeAccesToken();
+            HelperFunctions.navigateToLoginPage();
           },
           child: Text('Logout'),
         ),

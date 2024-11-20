@@ -5,6 +5,7 @@ import 'package:travel_guide_app/presentation/screens/Search/search_page.dart';
 import 'package:travel_guide_app/presentation/screens/TourRecommendation/tour_recommendation_page.dart';
 import 'package:travel_guide_app/presentation/screens/page_wrapper.dart';
 
+import '../presentation/screens/Authentication/ForgetPassword/forget_password_page.dart';
 import '../presentation/screens/Authentication/Login/login_page.dart';
 import 'index.dart';
 
@@ -47,6 +48,10 @@ class HelperFunctions {
       screen: TourRecommendationPage(),
       arguments: {'destination': destinationName},
     );
+  }
+
+  static void navigateToChangePasswordPage() {
+    HelperFunctions.navigateToScreen(screen: ForgetPasswordPage());
   }
 
   static void showMessage(String message, int type) {
