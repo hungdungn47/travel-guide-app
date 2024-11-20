@@ -1,5 +1,6 @@
 import 'package:get_storage/get_storage.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_page.dart';
+import 'package:travel_guide_app/presentation/screens/Search/search_page.dart';
 import 'package:travel_guide_app/presentation/screens/page_wrapper.dart';
 import 'package:travel_guide_app/utils/index.dart';
 

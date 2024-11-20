@@ -1,22 +1,21 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_transition_mixin.dart';
 import 'package:travel_guide_app/main.dart';
 import 'package:travel_guide_app/models/Destination.dart';
+import 'package:travel_guide_app/presentation/controllers/search_controller.dart';
 import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
 
 import '../../components/search_bar.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class SearchPage extends StatelessWidget {
+  SearchPage({Key? key}) : super(key: key);
 
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
+  final SearchPageController _controller = Get.put(SearchPageController());
 
-class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,69 +23,35 @@ class _SearchPageState extends State<SearchPage> {
         centerTitle: true,
         title: Text('Search'),
       ),
-      body: Column(
-        children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          //   child: TextField(
-          //     decoration: InputDecoration(
-          //       hintText: 'Search',
-          //       prefixIcon: Icon(Icons.search),
-          //       border: OutlineInputBorder(
-          //         borderRadius: BorderRadius.circular(30),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          _buildSearchBar(context),
-          // Padding(
-          //   padding: EdgeInsets.only(right: 20),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       GestureDetector(
-          //         child: const Text(
-          //           'Filter',
-          //           style: TextStyle(
-          //             decoration: TextDecoration.underline,
-          //             fontStyle: FontStyle.italic,
-          //           ),
-          //         ),
-          //         onTap: () => {
-          //           showModalBottomSheet(
-          //               context: context,
-          //               builder: (BuildContext context) {
-          //                 return BottomModalMenu();
-          //               },
-          //               showDragHandle: true),
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          const Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Divider(
-              thickness: 1,
-              color: Colors.grey,
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (int i = 0; i < 10; i++) DestinationCard(),
-                ],
+      body: Obx(
+        () => Column(
+          children: [
+            _buildSearchBar(context),
+            const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Divider(
+                thickness: 1,
+                color: Colors.grey,
               ),
             ),
-          )
-        ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Display search results
+                    for (var destination in _controller.searchResults)
+                      DestinationCard(destination: destination),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
-}
 
-Widget _buildSearchBar(BuildContext context) {
+  Widget _buildSearchBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       child: SearchAnchor(
@@ -112,8 +77,7 @@ Widget _buildSearchBar(BuildContext context) {
               ),
               elevation: const WidgetStatePropertyAll(5.0),
               onSubmitted: (prompt) async {
-                // TODO: Call API to update hotel lists
-                // await _controller.updateHotelLists(prompt);
+                await _controller.getDestinationsByKeyword(prompt);
               },
               textStyle: WidgetStateProperty.all(
                 const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
@@ -135,7 +99,9 @@ Widget _buildSearchBar(BuildContext context) {
                     showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
-                          return BottomModalMenu();
+                          return BottomModalMenu(
+                            controller: _controller,
+                          );
                         },
                         showDragHandle: true);
                   },
@@ -146,8 +112,7 @@ Widget _buildSearchBar(BuildContext context) {
           suggestionsBuilder:
               (BuildContext context, SearchController controller) async {
             List<String> suggestions =
-                // TODO: Replace with actual suggestions (Call API)
-                ["A", "P", "I", "haha", "stupid"];
+                await _controller.getKeyword(controller.text);
             return List<ListTile>.generate(suggestions.length, (int index) {
               return ListTile(
                 title: Text(
@@ -157,17 +122,21 @@ Widget _buildSearchBar(BuildContext context) {
                 ),
                 onTap: () async {
                   controller.closeView(suggestions[index]);
-                  // TODO: Call API to update hotel lists
-                  // await _controller.updateHotelLists(suggestions[index]);
+                  await _controller
+                      .getDestinationsByKeyword(suggestions[index]);
                 },
               );
             });
           }),
     );
   }
+}
 
 class DestinationCard extends StatefulWidget {
-  const DestinationCard({Key? key}) : super(key: key);
+  const DestinationCard({Key? key, required this.destination})
+      : super(key: key);
+
+  final Destination destination;
 
   @override
   State<DestinationCard> createState() => _DestinationCardState();
@@ -181,7 +150,8 @@ class _DestinationCardState extends State<DestinationCard> {
     return GestureDetector(
       onTap: () {
         // TODO: Navigate to the actual destination details page (State management)
-        HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: 1));
+        HelperFunctions.navigateToScreen(
+            screen: DestinationDetailsPage(destinationId: "1"));
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -196,7 +166,7 @@ class _DestinationCardState extends State<DestinationCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Trang An',
+                      widget.destination.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -206,7 +176,7 @@ class _DestinationCardState extends State<DestinationCard> {
                     Row(
                       children: [
                         Icon(Icons.star),
-                        Text('4.9 / 5'),
+                        Text(widget.destination.rating.toString() + "/5"),
                       ],
                     ),
                     Row(
@@ -214,7 +184,7 @@ class _DestinationCardState extends State<DestinationCard> {
                         Icon(Icons.location_on),
                         Expanded(
                           child: Text(
-                            "Ninh Binh, Viet Nam",
+                            widget.destination.location,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -249,7 +219,7 @@ class _DestinationCardState extends State<DestinationCard> {
               height: 150,
               width: 150,
               child: Image(
-                  image: AssetImage('assets/images/trangan.jpg'),
+                  image: NetworkImage(widget.destination.imageUrl[0]),
                   fit: BoxFit.cover),
             )
           ],
@@ -260,7 +230,9 @@ class _DestinationCardState extends State<DestinationCard> {
 }
 
 class BottomModalMenu extends StatefulWidget {
-  const BottomModalMenu({Key? key}) : super(key: key);
+  BottomModalMenu({super.key, required this.controller});
+
+  SearchPageController controller;
 
   @override
   State<BottomModalMenu> createState() => _BottomModalMenuState();
@@ -274,82 +246,90 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              'Filter',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+    return Obx(
+      () => Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'Filter',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              'City/Province:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              Text(
+                'City/Province:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            DropdownBox(
-              title: city,
-              options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
-              onSelected: (value) {
-                setState(() {
-                  city = value;
-                });
-              },
-            ),
-            Text(
-              'Type of Travel:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              DropdownBox(
+                title: city,
+                options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
+                onSelected: (value) {
+                  setState(() {
+                    city = value;
+                  });
+                },
               ),
-            ),
-            Padding(
+              Text(
+                'Type of Travel:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text('Cultrue & History')),
+                      Checkbox(
+                          value: isCulture,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isCulture = value!;
+                            });
+                          }),
+                    ],
+                  )),
+              Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Row(
                   children: [
-                    Expanded(child: Text('Cultrue & History')),
+                    Expanded(child: Text('Leisure & Relaxation')),
                     Checkbox(
-                        value: isCulture,
+                        value: isLeisure,
                         onChanged: (bool? value) {
                           setState(() {
-                            isCulture = value!;
+                            isLeisure = value!;
                           });
                         }),
                   ],
-                )),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Row(
-                children: [
-                  Expanded(child: Text('Leisure & Relaxation')),
-                  Checkbox(
-                      value: isLeisure,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isLeisure = value!;
-                        });
-                      }),
-                ],
+                ),
               ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    Expanded(child: Text('Adventure')),
-                    Checkbox(
-                        value: isAdventure,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isAdventure = value!;
-                          });
-                        }),
-                  ],
-                )),
-          ],
+              Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text('Adventure')),
+                      Checkbox(
+                          value: isAdventure,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isAdventure = value!;
+                            });
+                          }),
+                    ],
+                  )),
+              ElevatedButton(
+                onPressed: () {
+                  widget.controller.fetchSearchResults();
+                },
+                child: Text('Apply'),
+              ),
+            ],
+          ),
         ),
       ),
     );
