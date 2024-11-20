@@ -16,6 +16,7 @@ class TourRecommendationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Tour for ${Get.arguments['destination']}');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -45,28 +46,47 @@ class TourRecommendationPage extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder<void>(
-              future: _controller.fetchTours(),
+              future: _controller.fetchToursOfDestination(Get.arguments['destination']),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: LoadingAnimation());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.connectionState == ConnectionState.done) {
-                  return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: _controller.tours.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                        child: GestureDetector(
-                            onTap: () {
-                              HelperFunctions.navigateToScreen(screen: TourDetails(tour: _controller.tours[index]));
-                            },
-                            child: TourComponent(tour: _controller.tours[index]),
+                    if(_controller.tours.isNotEmpty) {
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: _controller.tours.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                HelperFunctions.navigateToScreen(screen: TourDetails(tour: _controller.tours[index]));
+                              },
+                              child: TourComponent(tour: _controller.tours[index]),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/icons/empty_icon.png',
+                              height: 200,
+                              width: 300,
+                            ),
+                            const SizedBox(height: 50),
+                            Text('There is no recommendation', style: Theme.of(context).textTheme.titleSmall,),
+                            Text('for this place!', style: Theme.of(context).textTheme.titleSmall,),
+                          ],
                         ),
                       );
-                    },
-                  );
+                    }
                 } else {
                   return const Center(child: Text('No tours available.'));
                 }

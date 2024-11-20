@@ -3,7 +3,7 @@ import '../../models/Tour.dart';
 class Data {
   static final toursData = [
     Tour(
-      destination: "Ha Long Bay",
+      destination: "Hạ Long Bay",
       location: "Quang Ninh, Vietnam",
       days: 3,
       nights: 2,
@@ -64,7 +64,7 @@ class Data {
         imageUrl: 'https://cdn3.ivivu.com/2023/10/du-lich-Da-Lat-ivivu1.jpg'
     ),
     Tour(
-        destination: "Phu Quoc",
+        destination: "Phú Quốc",
         location: "Kien Giang, Vietnam",
         days: 5,
         nights: 4,

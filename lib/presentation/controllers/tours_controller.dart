@@ -21,6 +21,16 @@ class ToursController extends GetxController {
     }
   }
 
+  Future<void> fetchToursOfDestination(String destination) async {
+    try {
+      List<Tour> tours = await apiService.getTours();
+      tours.removeWhere((tour) => tour.destination != destination);
+      changeTours(tours);
+    } catch (e) {
+      print("Error fetching tours: $e");
+    }
+  }
+
   void changeTours(List<Tour> newTours) {
     tours.assignAll(newTours);
   }

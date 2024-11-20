@@ -181,7 +181,7 @@ class _DestinationCardState extends State<DestinationCard> {
     return GestureDetector(
       onTap: () {
         // TODO: Navigate to the actual destination details page (State management)
-        HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: 1));
+        HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: '673a9150bea5a746f29912e6'));
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
