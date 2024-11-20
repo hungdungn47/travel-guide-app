@@ -14,22 +14,24 @@ class CustomSearchBar extends StatelessWidget {
       tag: 'search_box',
       child: Material(
           child: Container(
-            color: const Color.fromARGB(255, 238, 252, 250),
+            color: Color.fromARGB(255, 238, 252, 250),
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
         child: SearchAnchor(
-            isFullScreen: false,
             headerTextStyle: const TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w400,
             ),
+            isFullScreen: false,
             viewElevation: 5.0,
             viewConstraints: const BoxConstraints(
               minHeight: 100,
               maxHeight: 250,
             ),
+            viewOnSubmitted:  (prompt) async {
+              await searchPageController.getDestinationsByKeyword(prompt);
+            },
             builder: (context, controller) {
               return SearchBar(
-                controller: controller,
                 hintText: 'Find your next destination',
                 hintStyle: WidgetStateProperty.all(
                   const TextStyle(
@@ -38,17 +40,10 @@ class CustomSearchBar extends StatelessWidget {
                   ),
                 ),
                 elevation: const WidgetStatePropertyAll(5.0),
-                onSubmitted: (prompt) async {
-                  controller.closeView(prompt);
-                  await searchPageController.getDestinationsByKeyword(prompt);
-                },
                 textStyle: WidgetStateProperty.all(
                   const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
                 ),
                 onTap: () {
-                  controller.openView();
-                },
-                onChanged: (_) {
                   controller.openView();
                 },
                 leading: const Padding(

@@ -116,7 +116,6 @@ class HotelPage extends StatelessWidget {
   }
 
   Widget _buildSearchBar(BuildContext context) {
-    String searchText = '';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       child: SearchAnchor(
@@ -130,6 +129,9 @@ class HotelPage extends StatelessWidget {
             minHeight: 100,
             maxHeight: 400
           ),
+          viewOnSubmitted: (prompt) async {
+            await _controller.updateHotelLists(prompt);
+          },
           builder: (context, controller) {
             return SearchBar(
               controller: controller,
@@ -141,17 +143,10 @@ class HotelPage extends StatelessWidget {
                 ),
               ),
               elevation: const WidgetStatePropertyAll(5.0),
-              onSubmitted: (prompt) async {
-                controller.closeView(prompt);
-                await _controller.updateHotelLists(prompt);
-              },
               textStyle: WidgetStateProperty.all(
                 const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
               ),
               onTap: () {
-                controller.openView();
-              },
-              onChanged: (_) {
                 controller.openView();
               },
               leading: const Padding(
