@@ -33,11 +33,12 @@ class ApiServiceImpl implements ApiService {
   }
 
   Future<List<Tour>> getTours() async {
+    print('Getting all tours in api service');
     return fetchToursData();
   }
 
   List<Tour> fetchToursData() {
-    return Data.toursData;
+    return toursData();
   }
 
   Future<List<Destination>> fetchData() async {
