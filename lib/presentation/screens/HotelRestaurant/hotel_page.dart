@@ -11,11 +11,10 @@ class HotelPage extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
   HotelPage({super.key, required this.destinationId});
 
-  late final HotelController _controller;
+  late final HotelController _controller = Get.put(HotelController(destinationId: destinationId));
 
   @override
   Widget build(BuildContext context) {
-    _controller = Get.put(HotelController(destinationId: destinationId));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -43,7 +42,7 @@ class HotelPage extends StatelessWidget {
           children: [
             _buildSearchBar(context),
             _buildRecommendationText(context),
-            _buildHotelEntriesList(context),
+            _controller.hotels.isEmpty ? _buildEmptyHotelNotification(context) : _buildHotelEntriesList(context),
           ],
         ),
       ),
@@ -91,6 +90,27 @@ class HotelPage extends StatelessWidget {
           }
         },
         controller: _controller.getScrollController(),
+      ),
+    );
+  }
+
+  Widget _buildEmptyHotelNotification(BuildContext context) {
+    return Expanded(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/icons/empty_icon.png',
+              height: 200,
+              width: 300,
+            ),
+            const SizedBox(height: 50),
+            Text('There is no hotels', style: Theme.of(context).textTheme.titleSmall,),
+            Text('for this place!', style: Theme.of(context).textTheme.titleSmall,),
+          ],
+        ),
       ),
     );
   }

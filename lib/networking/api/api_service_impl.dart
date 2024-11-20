@@ -266,11 +266,11 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
     if (response == null) {
       throw Exception('Some error happen. Please try again');
     }
-    if (response?["code"] == 400) {
-      throw Exception(response?["message"]);
+    if (response["code"] == 400) {
+      throw Exception(response["message"]);
     }
     try {
-      final results = response?['results'] as dynamic;
+      final results = response['results'] as dynamic;
       final String accessToken = results?['jwtToken'] as String;
       _localStorage.saveData('accessToken', accessToken);
       Config.accessToken = accessToken;
@@ -297,9 +297,6 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
     final int code = response['code'] ?? -1;
     final String message = response['message'] ??
         'Hệ thống quá tải. Vui lòng thử lại sau';
-    if (code != 200) {
-      throw Exception(message);
-    }
     return {
       'code': code,
       'message': message,
