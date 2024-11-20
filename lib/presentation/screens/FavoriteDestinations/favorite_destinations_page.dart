@@ -40,10 +40,29 @@ class FavoriteDestinationsPage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.connectionState == ConnectionState.done) {
             return Obx(() {
-              if(_controller.isViewModeCarousel.value) {
-                    return favoriteDestinationCarouselView(context);
+              if(_controller.favoriteDestinations.isNotEmpty) {
+                print('In favorite des page: ${_controller.favoriteDestinations}');
+                if(_controller.isViewModeCarousel.value) {
+                  return favoriteDestinationCarouselView(context);
+                } else {
+                  return favoriteDestinationsListView(context);
+                }
               } else {
-                return favoriteDestinationsListView(context);
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/icons/empty_icon.png',
+                        height: 200,
+                        width: 300,
+                      ),
+                      const SizedBox(height: 50),
+                      Text('Your favorite destinations list is empty!', style: Theme.of(context).textTheme.titleSmall,),
+                    ],
+                  ),
+                );
               }
             });
           } else {
@@ -185,6 +204,7 @@ class FavoriteDestinationsPage extends StatelessWidget {
   Widget favoriteDestinationCarouselView(BuildContext context) {
     return Obx(() => CarouselSlider(
       options: CarouselOptions(
+          enableInfiniteScroll: false,
           enlargeCenterPage: true,
           enlargeFactor: 0.3,
           height: MediaQuery.of(context).size.height

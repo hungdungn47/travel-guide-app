@@ -23,7 +23,10 @@ class ApiServiceImpl implements ApiService {
   }
 
   Future<List<Destination>> getFavoriteDestinations() async {
-    return fetchData();
+    const initialFavoriteDestinationsName = ['Hue', 'Tràng An', 'Hạ Long Bay'];
+    List<Destination> favoriteDestinations = await fetchData();
+    favoriteDestinations.removeWhere((destination) => !(initialFavoriteDestinationsName.contains(destination.name)));
+    return favoriteDestinations;
   }
 
   Future<List<Tour>> getTours() async {
