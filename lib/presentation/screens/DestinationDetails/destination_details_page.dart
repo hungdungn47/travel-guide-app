@@ -144,7 +144,7 @@ class DestinationDetailsPage extends StatelessWidget {
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(screen: HotelPage());
+                HelperFunctions.navigateToScreen(screen: HotelPage(destinationId: destinationId));
               },
               icon: Icon(Icons.food_bank_outlined,
                   color: Colors.grey.withOpacity(0.6), size: 36),
@@ -152,7 +152,7 @@ class DestinationDetailsPage extends StatelessWidget {
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(screen: HotelPage());
+                HelperFunctions.navigateToScreen(screen: HotelPage(destinationId: destinationId));
               },
               icon: Icon(Icons.local_hotel_outlined,
                   color: Colors.grey.withOpacity(0.6), size: 40),

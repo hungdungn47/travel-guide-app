@@ -8,7 +8,7 @@ class TourComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 125,
+      height: 135,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -66,7 +66,7 @@ class TourComponent extends StatelessWidget {
           ),
           SizedBox(
             width: 140,
-            height: 125,
+            height: 135,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(

@@ -2,6 +2,7 @@ import 'package:travel_guide_app/models/Destination.dart';
 import 'package:travel_guide_app/models/Festival.dart';
 import 'package:travel_guide_app/networking/api/api_service.dart';
 import 'package:travel_guide_app/networking/index.dart';
+import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel.dart';
 
 import '../../models/Tour.dart';
 
@@ -113,7 +114,9 @@ class ApiServiceImpl implements ApiService {
   }
 
   Future<List<Destination>> fetchData() async {
+    print('Start fetching');
     final response = await HttpClient.get(endPoint: 'api/v1/destinations/getAll');
+    print('Done fetching');
     if (response == null) {
       print('No data found.');
     }
@@ -153,6 +156,28 @@ class ApiServiceImpl implements ApiService {
       }
       final destination = Festival.fromJson(destinationJson);
       data.add(destination);
+    }
+
+    return data;
+  }
+
+  Future<List<Hotel>> fetchHotels(String destinationId) async {
+    final response = await HttpClient.get(endPoint: 'api/v1/hotels/getAll', queryParams: {
+      "destinationId": destinationId
+    });
+    if (response == null) {
+      print('No data found.');
+    }
+    final results = response?['results'] as List<dynamic>?;
+    List<Hotel> data = [];
+    for(int i = 0; i < results!.length; i++) {
+      final hotelJson = results[i];
+      if (hotelJson == null) {
+        print('No hotels found.');
+        continue;
+      }
+      final hotel = Hotel.fromJson(hotelJson);
+      data.add(hotel);
     }
 
     return data;
