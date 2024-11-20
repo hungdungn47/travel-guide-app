@@ -65,7 +65,7 @@ class DestinationDetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: buildBottomNavBar(context),
+            bottomNavigationBar: buildBottomNavBar(context, destination.name),
           );
         }
       },
@@ -108,7 +108,7 @@ class DestinationDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget buildBottomNavBar(BuildContext context) {
+  Widget buildBottomNavBar(BuildContext context, String destinationName) {
     return Container(
       // decoration: const BoxDecoration(
       //   color: Colors.white,
@@ -144,7 +144,8 @@ class DestinationDetailsPage extends StatelessWidget {
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(screen: HotelPage(destinationId: destinationId));
+                // HelperFunctions.navigateToScreen(screen: HotelPage(destinationId: destinationId));
+                HelperFunctions.navigateToHotelScreen(destinationId: destinationId);
               },
               icon: Icon(Icons.food_bank_outlined,
                   color: Colors.grey.withOpacity(0.6), size: 36),
@@ -152,7 +153,8 @@ class DestinationDetailsPage extends StatelessWidget {
             const SizedBox(width: 16),
             IconButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(screen: HotelPage(destinationId: destinationId));
+                // HelperFunctions.navigateToScreen(screen: HotelPage(destinationId: destinationId));
+                HelperFunctions.navigateToHotelScreen(destinationId: destinationId);
               },
               icon: Icon(Icons.local_hotel_outlined,
                   color: Colors.grey.withOpacity(0.6), size: 40),
@@ -161,10 +163,11 @@ class DestinationDetailsPage extends StatelessWidget {
             Expanded(child: Container()),
             ElevatedButton(
               onPressed: () {
-                HelperFunctions.navigateToScreen(
-                  screen: TourRecommendationPage(),
-                  arguments: {'destination': 'Trang An'},
-                );
+                // HelperFunctions.navigateToScreen(
+                //   screen: TourRecommendationPage(),
+                //   arguments: {'destination': 'Trang An'},
+                // );
+                HelperFunctions.navigateToTourPage(destinationName);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(150, 68),
