@@ -19,6 +19,7 @@ class HttpClient {
       {required String endPoint, JSON? queryParams}) async {
     final url = Uri.https(baseUrl, endPoint, queryParams);
     var response = await client.get(url);
+    print(response.statusCode);
     if (response.statusCode != 204 && response.statusCode != 200) {
       return null;
     }

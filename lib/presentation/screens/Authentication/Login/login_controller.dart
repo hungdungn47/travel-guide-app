@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-
-import '../../../../utils/helper_functions.dart';
+import '../../../../networking/api/index.dart';
+import '../../../../utils/index.dart';
 import '../../page_wrapper.dart';
 
 class LoginController extends GetxController{
+  final apiService = sl.get<ApiService>();
   late TextEditingController _usernameTextController;
   late GlobalKey<FormState> _formKey;
   late TextEditingController _passwordTextController;
@@ -45,9 +44,15 @@ class LoginController extends GetxController{
     return true;
   }
 
-  void login() {
-    if(_formKey.currentState!.validate()) {
-      _navigateHome();
+  Future<void> login() async {
+    try{
+      await apiService.login(_usernameTextController.text, _passwordTextController.text);
+      print('login sucessfully');
+      HelperFunctions.showMessage('Login successfully', 1);
+      await Future.delayed(const Duration(seconds: 3));
+      HelperFunctions.navigateToHomePage();
+    } catch (e) {
+      HelperFunctions.showMessage(e.toString().replaceFirst('Exception: ', ''), 2);
     }
   }
 

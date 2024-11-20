@@ -18,7 +18,6 @@ class FavoriteDestinationsController extends GetxController {
 
   Future<void> fetchDestinations() async {
     try {
-      await Future.delayed(const Duration(seconds: 5));
       final destinations = await apiService.getFavoriteDestinations();
       changeFavoriteDestinations(destinations);
     } catch (e) {
