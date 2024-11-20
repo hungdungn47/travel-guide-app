@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travel_guide_app/presentation/screens/Authentication/ForgetPassword/forget_password_page.dart';
+import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_page.dart';
 import 'dart:io';
+
+import 'package:travel_guide_app/utils/helper_functions.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -9,13 +13,8 @@ class UserProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Column(
-            children: [
-              Text('Profile'),
-            ],
-          ),
-        ),
+        centerTitle: true,
+        title: Text('Profile'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -234,7 +233,7 @@ class ChangePasswordButton extends StatelessWidget {
     return FilledButton(
       onPressed: () {
         // TODO: Navigate to change password page
-
+        HelperFunctions.navigateToScreen(screen: ForgetPasswordPage());
       },
       child: Text('Change Password'),
     );
@@ -280,7 +279,7 @@ class LogoutDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             // TODO: Navigate to login page
-            
+            HelperFunctions.navigateToScreen(screen: LoginPage());
           },
           child: Text('Logout'),
         ),

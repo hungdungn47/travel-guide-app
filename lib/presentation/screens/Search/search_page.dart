@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/routes/get_transition_mixin.dart';
 import 'package:travel_guide_app/main.dart';
+import 'package:travel_guide_app/models/Destination.dart';
+import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
+import 'package:travel_guide_app/utils/helper_functions.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -21,42 +24,44 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  child: const Text(
-                    'Filter',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                  onTap: () => {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return BottomModalMenu();
-                        })
-                  },
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       hintText: 'Search',
+          //       prefixIcon: Icon(Icons.search),
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(30),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          _buildSearchBar(context),
+          // Padding(
+          //   padding: EdgeInsets.only(right: 20),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       GestureDetector(
+          //         child: const Text(
+          //           'Filter',
+          //           style: TextStyle(
+          //             decoration: TextDecoration.underline,
+          //             fontStyle: FontStyle.italic,
+          //           ),
+          //         ),
+          //         onTap: () => {
+          //           showModalBottomSheet(
+          //               context: context,
+          //               builder: (BuildContext context) {
+          //                 return BottomModalMenu();
+          //               },
+          //               showDragHandle: true),
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Divider(
@@ -79,6 +84,86 @@ class _SearchPageState extends State<SearchPage> {
   }
 }
 
+Widget _buildSearchBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      child: SearchAnchor(
+          isFullScreen: false,
+          headerTextStyle: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w400,
+          ),
+          viewElevation: 5.0,
+          viewConstraints: const BoxConstraints(
+            minHeight: 100,
+            maxHeight: 300,
+          ),
+          builder: (context, controller) {
+            return SearchBar(
+              controller: controller,
+              hintText: 'Find your next destination',
+              hintStyle: WidgetStateProperty.all(
+                const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              elevation: const WidgetStatePropertyAll(5.0),
+              onSubmitted: (prompt) async {
+                // TODO: Call API to update hotel lists
+                // await _controller.updateHotelLists(prompt);
+              },
+              textStyle: WidgetStateProperty.all(
+                const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+              ),
+              onTap: () {
+                controller.openView();
+              },
+              onChanged: (_) {
+                controller.openView();
+              },
+              leading: const Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Icon(Icons.search),
+              ),
+              trailing: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.filter_alt_outlined),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return BottomModalMenu();
+                        },
+                        showDragHandle: true);
+                  },
+                ),
+              ],
+            );
+          },
+          suggestionsBuilder:
+              (BuildContext context, SearchController controller) async {
+            List<String> suggestions =
+                // TODO: Replace with actual suggestions (Call API)
+                ["A", "P", "I", "haha", "stupid"];
+            return List<ListTile>.generate(suggestions.length, (int index) {
+              return ListTile(
+                title: Text(
+                  suggestions[index],
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w400),
+                ),
+                onTap: () async {
+                  controller.closeView(suggestions[index]);
+                  // TODO: Call API to update hotel lists
+                  // await _controller.updateHotelLists(suggestions[index]);
+                },
+              );
+            });
+          }),
+    );
+  }
+
 class DestinationCard extends StatefulWidget {
   const DestinationCard({Key? key}) : super(key: key);
 
@@ -91,71 +176,82 @@ class _DestinationCardState extends State<DestinationCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      color: Theme.of(context).cardColor,
-      shadowColor: Theme.of(context).shadowColor,
-      child: Row(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Trang An',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+    return GestureDetector(
+      onTap: () {
+        // TODO: Navigate to the actual destination details page (State management)
+        HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: 1));
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        color: Colors.blue.shade50,
+        shadowColor: Theme.of(context).shadowColor,
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Trang An',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(Icons.star),
-                      Text('4.9 / 5'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on),
-                      Text("Ninh Binh, Viet Nam"),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  // Icon(Icons.favorite_border)
-                  GestureDetector(
-                    child: (isFavorite)
-                        ? Icon(Icons.favorite, color: Colors.red)
-                        : Icon(Icons.favorite_border),
-                    onTap: () => {
-                      setState(() {
-                        isFavorite = !isFavorite;
-                      }),
-                      if (isFavorite)
-                        {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Added to favorite'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          )
-                        }
-                    },
-                  )
-                ],
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.star),
+                        Text('4.9 / 5'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on),
+                        Expanded(
+                          child: Text(
+                            "Ninh Binh, Viet Nam",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    // Icon(Icons.favorite_border)
+                    GestureDetector(
+                      child: (isFavorite)
+                          ? Icon(Icons.favorite, color: Colors.red)
+                          : Icon(Icons.favorite_border),
+                      onTap: () => {
+                        setState(() {
+                          isFavorite = !isFavorite;
+                        }),
+                        if (isFavorite)
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Added to favorite'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            )
+                          }
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 150,
-            width: 150,
-            child: Image(
-                image: AssetImage('assets/images/trangan.jpg'),
-                fit: BoxFit.cover),
-          )
-        ],
+            Container(
+              height: 150,
+              width: 150,
+              child: Image(
+                  image: AssetImage('assets/images/trangan.jpg'),
+                  fit: BoxFit.cover),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -177,62 +273,54 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
-            child: Divider(
-              thickness: 5,
-              color: Colors.grey,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Filter',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
-            'Filter',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+            Text(
+              'City/Province:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
-            'City/Province:',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            DropdownBox(
+              title: city,
+              options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
+              onSelected: (value) {
+                setState(() {
+                  city = value;
+                });
+              },
             ),
-          ),
-          DropdownBox(
-            title: city,
-            options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
-            onSelected: (value) {
-              setState(() {
-                city = value;
-              });
-            },
-          ),
-          Text(
-            'Type of Travel:',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            Text(
+              'Type of Travel:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Row(
-              children: [
-                Expanded(child: Text('Cultrue & History')),
-                Checkbox(
-                    value: isCulture,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isCulture = value!;
-                      });
-                    }),
-              ],
-            )  
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child:
-              Row(
+            Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: Text('Cultrue & History')),
+                    Checkbox(
+                        value: isCulture,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isCulture = value!;
+                          });
+                        }),
+                  ],
+                )),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Row(
                 children: [
                   Expanded(child: Text('Leisure & Relaxation')),
                   Checkbox(
@@ -244,23 +332,23 @@ class _BottomModalMenuState extends State<BottomModalMenu> {
                       }),
                 ],
               ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Row(
-              children: [
-                Expanded(child: Text('Adventure')),
-                Checkbox(
-                    value: isAdventure,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isAdventure = value!;
-                      });
-                    }),
-              ],
-            )
-          ),
-        ],
+            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Expanded(child: Text('Adventure')),
+                    Checkbox(
+                        value: isAdventure,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isAdventure = value!;
+                          });
+                        }),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -315,7 +403,7 @@ class _DropdownBoxState extends State<DropdownBox> {
           },
         );
       },
-      child: Padding (
+      child: Padding(
         padding: EdgeInsets.all(20),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
