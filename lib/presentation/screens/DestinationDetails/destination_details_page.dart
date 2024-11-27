@@ -60,9 +60,9 @@ class DestinationDetailsPage extends StatelessWidget {
                     CarouselSliderWidget(
                         imgList: getImageInfoFromDestination(destination)),
                     buildDescription(
-                        context, 'Giới thiệu', destination.description),
+                        context, 'Introduction', destination.description),
                     buildDescription(
-                        context, 'Giá trị văn hóa', destination.culturalValue),
+                        context, 'Cultural Values', destination.culturalValue),
                   ],
                 ),
               ),

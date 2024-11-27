@@ -213,7 +213,7 @@ class Home extends StatelessWidget {
 
   List<DestinationImageOverview> getImageUrlFromFestivalList(List<Festival> destinations) {
     return destinations
-        .map((d) => DestinationImageOverview(id: d.destinationId, imageUrl: d.imageUrl))
+        .map((d) => DestinationImageOverview(id: d.destinationId, imageUrl: d.imageUrl, name: d.name))
         .toList();
   }
 }

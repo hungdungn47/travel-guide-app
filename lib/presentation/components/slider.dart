@@ -74,13 +74,29 @@ class CarouselSliderWidget extends StatelessWidget {
           HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: data.id!,));
         }
       },
-      child: Container(
-        margin: EdgeInsets.all(5.0),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(24)),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Image.network(data.imageUrl, fit: BoxFit.cover),
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(5.0),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(24)),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Image.network(data.imageUrl, fit: BoxFit.cover),
+            ),
+          ),
+          const SizedBox(height: 12,),
+          data.name != null ? Text(
+            data.name ?? '',
+            style: context.textTheme.bodyLarge?.copyWith(
+              color: Colors.black,
+              fontWeight: FontWeight.bold
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ) : SizedBox(),
+        ],
       ),
     );
   }
