@@ -11,8 +11,11 @@ import '../../components/loading.dart';
 
 class FavoriteDestinationsPage extends StatelessWidget {
   FavoriteDestinationsPage({Key? key}) : super(key: key);
-  final FavoriteDestinationsController _controller = Get.find<FavoriteDestinationsController>();
-  final DestinationController destinationController = Get.put(DestinationController());
+  final FavoriteDestinationsController _controller =
+      Get.find<FavoriteDestinationsController>();
+  final DestinationController destinationController =
+      Get.put(DestinationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,54 +25,57 @@ class FavoriteDestinationsPage extends StatelessWidget {
         centerTitle: true,
         actions: [
           Obx(() => IconButton(
-            onPressed: () {
-              _controller.toggleViewMode();
-            },
-            icon: Icon(
-                _controller.isViewModeCarousel.value ? Icons.view_list : Icons.view_carousel
-            ),
-          ))
+                onPressed: () {
+                  _controller.toggleViewMode();
+                },
+                icon: Icon(_controller.isViewModeCarousel.value
+                    ? Icons.view_list
+                    : Icons.view_carousel),
+              ))
         ],
       ),
       body: FutureBuilder<void>(
-        future: _controller.fetchDestinations(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: LoadingAnimation());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            return Obx(() {
-              if(_controller.favoriteDestinations.isNotEmpty) {
-                print('In favorite des page: ${_controller.favoriteDestinations}');
-                if(_controller.isViewModeCarousel.value) {
-                  return favoriteDestinationCarouselView(context);
+          future: _controller.fetchDestinations(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: LoadingAnimation());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return Obx(() {
+                if (_controller.favoriteDestinations.isNotEmpty) {
+                  print(
+                      'In favorite des page: ${_controller.favoriteDestinations}');
+                  if (_controller.isViewModeCarousel.value) {
+                    return favoriteDestinationCarouselView(context);
+                  } else {
+                    return favoriteDestinationsListView(context);
+                  }
                 } else {
-                  return favoriteDestinationsListView(context);
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/icons/empty_icon.png',
+                          height: 200,
+                          width: 300,
+                        ),
+                        const SizedBox(height: 50),
+                        Text(
+                          'Your favorite destinations list is empty!',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
+                    ),
+                  );
                 }
-              } else {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/icons/empty_icon.png',
-                        height: 200,
-                        width: 300,
-                      ),
-                      const SizedBox(height: 50),
-                      Text('Your favorite destinations list is empty!', style: Theme.of(context).textTheme.titleSmall,),
-                    ],
-                  ),
-                );
-              }
-            });
-          } else {
-            return const Center(child: Text('No destinations available.'));
-          }
-        }
-      ),
+              });
+            } else {
+              return const Center(child: Text('No destinations available.'));
+            }
+          }),
     );
   }
 
@@ -82,12 +88,17 @@ class FavoriteDestinationsPage extends StatelessWidget {
             itemCount: _controller.favoriteDestinations.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                 child: GestureDetector(
                   onTap: () {
-                    HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: _controller.favoriteDestinations[index].id));
+                    HelperFunctions.navigateToScreen(
+                        screen: DestinationDetailsPage(
+                            destinationId:
+                                _controller.favoriteDestinations[index].id));
                   },
-                  child: destinationListTile(context, _controller.favoriteDestinations[index]),
+                  child: destinationListTile(
+                      context, _controller.favoriteDestinations[index]),
                 ),
               );
             },
@@ -126,7 +137,8 @@ class FavoriteDestinationsPage extends StatelessWidget {
                       destination.name,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
-                        fontSize: 18, // Slightly reduce font size for better responsiveness
+                        fontSize: 18,
+                        // Slightly reduce font size for better responsiveness
                         fontWeight: FontWeight.w500,
                       ),
                       overflow: TextOverflow.ellipsis, // Prevents text overflow
@@ -136,10 +148,9 @@ class FavoriteDestinationsPage extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      Image.asset(
-                        'assets/icons/location_icon.png',
-                        height: 16,
-                        width: 16,
+                      const Icon(Icons.place),
+                      const SizedBox(
+                        width: 3,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -149,8 +160,24 @@ class FavoriteDestinationsPage extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
-                          overflow: TextOverflow.ellipsis, // Prevents text overflow
+                          overflow: TextOverflow.ellipsis,
+                          // Prevents text overflow
                           maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.star),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "${destination.rating}/5",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],
@@ -171,8 +198,9 @@ class FavoriteDestinationsPage extends StatelessWidget {
                   if (loadingProgress == null) return child;
                   return Center(child: CircularProgressIndicator());
                 },
-                errorBuilder: (context, error, stackTrace) =>
-                    Center(child: Icon(Icons.broken_image, size: 50, color: Colors.grey)),
+                errorBuilder: (context, error, stackTrace) => Center(
+                    child:
+                        Icon(Icons.broken_image, size: 50, color: Colors.grey)),
               ),
             ),
           ),
@@ -183,76 +211,84 @@ class FavoriteDestinationsPage extends StatelessWidget {
 
   Widget favoriteDestinationCarouselView(BuildContext context) {
     return Obx(() => CarouselSlider(
-      options: CarouselOptions(
-          enableInfiniteScroll: false,
-          enlargeCenterPage: true,
-          enlargeFactor: 0.3,
-          height: MediaQuery.of(context).size.height
-      ),
-      items: _controller.favoriteDestinations.map((destination) {
-        return Builder(builder: (BuildContext context) {
-          return Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: destination.id,));
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          destination.imageUrl[0],
-                          width: 300,
-                          fit: BoxFit.cover,
+          options: CarouselOptions(
+              enableInfiniteScroll: false,
+              enlargeCenterPage: true,
+              enlargeFactor: 0.3,
+              height: MediaQuery.of(context).size.height),
+          items: _controller.favoriteDestinations.map((destination) {
+            return Builder(builder: (BuildContext context) {
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            HelperFunctions.navigateToScreen(
+                                screen: DestinationDetailsPage(
+                              destinationId: destination.id,
+                            ));
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.network(
+                              destination.imageUrl[0],
+                              width: 300,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(destination.name, style: Theme.of(context).textTheme.headlineLarge,),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/icons/location_icon.png', height: 20, width: 20),
-                      const SizedBox(width: 8),
-                      Text(destination.location, style: Theme.of(context).textTheme.titleMedium)
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            // destinationController.changeDestination(destination.name);
-                            HelperFunctions.navigateToScreen(screen: DestinationDetailsPage(destinationId: destination.id,));
-                          },
-                          child: Text('Details')
+                      const SizedBox(height: 16),
+                      Text(
+                        destination.name,
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
-                      const SizedBox(width: 10),
-                      IconButton(
-                          onPressed: () {
-                            _controller.removeFavoriteDestination(destination);
-                          },
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red.withOpacity(0.6),
-                            size: 40,
-                          )
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/icons/location_icon.png',
+                              height: 20, width: 20),
+                          const SizedBox(width: 8),
+                          Text(destination.location,
+                              style: Theme.of(context).textTheme.titleMedium)
+                        ],
                       ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                // destinationController.changeDestination(destination.name);
+                                HelperFunctions.navigateToScreen(
+                                    screen: DestinationDetailsPage(
+                                  destinationId: destination.id,
+                                ));
+                              },
+                              child: Text('Details')),
+                          const SizedBox(width: 10),
+                          IconButton(
+                              onPressed: () {
+                                _controller
+                                    .removeFavoriteDestination(destination);
+                              },
+                              icon: Icon(
+                                Icons.favorite,
+                                color: Colors.red.withOpacity(0.6),
+                                size: 40,
+                              )),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
                     ],
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              )
-          );
-        });
-      }).toList(),
-    ));
+                  ));
+            });
+          }).toList(),
+        ));
   }
 }

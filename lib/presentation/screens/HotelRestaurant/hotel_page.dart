@@ -4,6 +4,7 @@ import 'package:travel_guide_app/presentation/screens/HotelRestaurant/hotel_cont
 import 'package:travel_guide_app/utils/widgets/gradient_text.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../../utils/helper_functions.dart';
 import 'hotel.dart';
 
 class HotelPage extends StatelessWidget {
@@ -74,22 +75,18 @@ class HotelPage extends StatelessWidget {
 
   Widget _buildHotelEntriesList(BuildContext context) {
     return Expanded(
-      child: AnimatedList(
-        key: _controller.listKey,
-        initialItemCount: _controller.hotels.length + 1,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index, animation) {
-          if (index == _controller.hotels.length) {
-            if (!_controller.hotelIsDone.value) {
-              return _buildProcessIndicator(context);
-            } else {
-              return Container();
-            }
-          } else {
-            return _buildHotelEntry(context, _controller.hotels[index], animation);
-          }
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        itemCount: _controller.hotels.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+            child: GestureDetector(
+              onTap: () {},
+              child: _buildHotelEntry(context, _controller.hotels[index]),
+            ),
+          );
         },
-        controller: _controller.getScrollController(),
       ),
     );
   }
@@ -182,28 +179,26 @@ class HotelPage extends StatelessWidget {
   }
 
   Widget _buildHotelEntry(
-      BuildContext context, Hotel entry, Animation<double> animation) {
+      BuildContext context, Hotel entry) {
 
-    return ScaleTransition(
-      key: UniqueKey(),
-      scale: CurvedAnimation(parent: animation, curve: Curves.bounceOut),
-      child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-          height: 150,
-          decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.black38,
-                    blurRadius: 5.0,
-                    offset: Offset(0, 6))
-              ]),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+        height: 150,
+        decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 5.0,
+                  offset: Offset(0, 6))
+            ]),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Container(
                 padding: const EdgeInsets.only(left: 17.0),
                 child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -232,36 +227,40 @@ class HotelPage extends StatelessWidget {
                       Row(
                         children: [
                           const Icon(Icons.place),
-                          Text(
-                            entry.location,
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w400),
+                          Expanded(
+                            child: Text(
+                              entry.location,
+                              overflow: TextOverflow.clip,
+                              softWrap: true,
+                              style: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w400),
+                            ),
                           )
                         ],
                       )
                     ]),
               ),
-              Container(
-                  width: 140,
-                  height: 140,
-                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Image.network(
-                        entry.imageUrl!,
-                        fit: BoxFit.cover,
-                      ),
+            ),
+            Container(
+                width: 140,
+                height: 140,
+                margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(120.0),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(120.0),
+                    child: Image.network(
+                      entry.imageUrl!,
+                      fit: BoxFit.cover,
                     ),
-                  )),
-            ],
-          )),
-    );
+                  ),
+                )),
+          ],
+        ));
   }
 
   Widget _buildProcessIndicator(BuildContext context) {

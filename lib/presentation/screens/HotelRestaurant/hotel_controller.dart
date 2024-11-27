@@ -20,8 +20,6 @@ class HotelController extends GetxController {
   final String destinationId;
   HotelController({required this.destinationId});
 
-  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
-
   @override
   void onInit() async {
     super.onInit();
@@ -55,13 +53,6 @@ class HotelController extends GetxController {
     for (Hotel hotel in hotelsToAdd) {
       currentHotels.add(hotel);
     }
-
-    for(int i = hotels.length; i < currentHotels.length; i++) {
-      listKey.currentState!
-          .insertItem(i, duration: const Duration(milliseconds: 500));
-    }
-
-
         hotelCurrentIndex.value = currentHotels.length;
         hotels.assignAll(currentHotels);
         hotelLoading.value = false;
@@ -69,23 +60,12 @@ class HotelController extends GetxController {
   }
 
   Future<void> updateHotelLists(String prompt) async {
-    for(int i = 0; i < hotels.length; i++) {
-      listKey.currentState!.removeItem(0, (context, animation) => Container(),
-          duration: Duration.zero);
-    }
-
     if (!hotelLoading.value) {
       hotelLoading.value = true;
       hotels.clear();
     }
 
     List<Hotel> updatedHotels = await _search(prompt, 0);
-
-    for(int i = 0; i < updatedHotels.length; i++) {
-      listKey.currentState!
-          .insertItem(i, duration: const Duration(milliseconds: 500));
-    }
-
         hotelCurrentIndex.value = updatedHotels.length;
         hotelIsRecommending.value = false;
         hotelCurrentSearchPrompt.value = prompt;
@@ -100,10 +80,6 @@ class HotelController extends GetxController {
     }
     // Only for demonstration
     List<Hotel> recommendations = await _search("Recommendation", 0);
-    for(int i = 0; i < recommendations.length; i++) {
-      listKey.currentState!
-          .insertItem(i, duration: const Duration(milliseconds: 500));
-    }
     hotels.assignAll(recommendations);
     hotelLoading.value = false;
   }

@@ -27,10 +27,7 @@ class ApiServiceImpl implements ApiService {
   }
 
   Future<List<Destination>> getFavoriteDestinations() async {
-    const initialFavoriteDestinationsName = ['Hue', 'Tràng An', 'Hạ Long Bay'];
-    List<Destination> favoriteDestinations = await fetchData();
-    favoriteDestinations.removeWhere((destination) => !(initialFavoriteDestinationsName.contains(destination.name)));
-    return favoriteDestinations;
+    return fetchData();
   }
 
   Future<List<Tour>> getTours() async {
@@ -53,9 +50,6 @@ class ApiServiceImpl implements ApiService {
     final results = response?['results'] as List<dynamic>?;
     List<Destination> data = [];
     for (int i = 0; i < results!.length; i++) {
-      if (i <= 2) {
-        continue;
-      }
       final destinationJson = results[i];
       if (destinationJson == null) {
         print('No destination found.');
@@ -155,9 +149,6 @@ Future<List<Destination>> fetchDataByKeyword(String keyword) async {
     final results = response?['results'] as List<dynamic>?;
     List<Destination> data = [];
     for(int i = 0; i < results!.length; i++) {
-      if(i<=2) {
-        continue;
-      }
       final destinationJson = results[i];
       if (destinationJson == null) {
         print('No destination found.');
