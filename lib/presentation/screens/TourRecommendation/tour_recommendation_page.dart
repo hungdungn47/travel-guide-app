@@ -19,40 +19,24 @@ class TourRecommendationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Tour recommendation'),
+        title: Text('${Get.arguments['destination']} tours'),
+        actions: [
+          IconButton(
+              onPressed: () => {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return BottomModalMenu();
+                    },
+                    showDragHandle: true)
+              },
+              icon: const Icon(Icons.filter_alt_outlined, size: 30,)
+          )
+        ],
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return BottomModalMenu();
-                      },
-                      showDragHandle: true);
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(12.0),
-                  padding: const EdgeInsets.all(12.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(style: BorderStyle.solid, width: 0.3, color: Colors.black),
-                  ),
-                  child: Row(
-                    children: [
-                      Text('Filter', style: Theme.of(context).textTheme.titleSmall,),
-                      const Icon(Icons.filter_alt_outlined, size: 30,)
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const SizedBox(height: 12),
           Expanded(
             child: FutureBuilder<void>(
               future: _controller.fetchToursOfDestination(Get.arguments['destination']),
