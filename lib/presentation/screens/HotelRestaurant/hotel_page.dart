@@ -19,7 +19,7 @@ class HotelPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Hotel", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),),
+        title: const Text("Hotels & Restaurants", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -150,12 +150,6 @@ class HotelPage extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8.0),
                 child: Icon(Icons.search),
               ),
-              trailing: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.filter_alt_outlined),
-                  onPressed: () {},
-                ),
-              ],
             );
           },
           suggestionsBuilder:
@@ -180,10 +174,8 @@ class HotelPage extends StatelessWidget {
 
   Widget _buildHotelEntry(
       BuildContext context, Hotel entry) {
-
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        height: 150,
         decoration: BoxDecoration(
             color: Colors.grey.shade100,
             borderRadius: BorderRadius.circular(20.0),
@@ -241,24 +233,27 @@ class HotelPage extends StatelessWidget {
                     ]),
               ),
             ),
-            Container(
-                width: 140,
-                height: 140,
-                margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(120.0),
-                ),
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: ClipRRect(
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Container(
+                  width: 140,
+                  height: 140,
+                  margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(120.0),
-                    child: Image.network(
-                      entry.imageUrl!,
-                      fit: BoxFit.cover,
-                    ),
                   ),
-                )),
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(120.0),
+                      child: Image.network(
+                        entry.imageUrl!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )),
+            ),
           ],
         ));
   }

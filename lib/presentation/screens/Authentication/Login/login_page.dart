@@ -19,8 +19,12 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: _buildUI(context),
+      resizeToAvoidBottomInset: true,
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: _buildUI(context)),
     );
   }
 
@@ -30,59 +34,61 @@ class LoginPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildLoginTitle(context),
-              const SizedBox(
-                height: 10,
-              ),
-              Form(
-                  key: _controller.formKey,
-                  child: Column(children: [
-                    AuthenticationTextField(
-                      editingController: _controller.usernameTextController,
-                      validator: _controller.validateUsername,
-                      labelText: 'Username',
-                      icon: Icon(Icons.person_outline,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    AuthenticationTextField(
-                      editingController: _controller.passwordTextController,
-                      validator: _controller.validatePassword,
-                      labelText: 'Password',
-                      obscureText: true,
-                      icon: Icon(Icons.lock_outline,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                  ])),
-              _buildForgetPasswordText(context),
-              _buildLoginButton(context),
-              Text(
-                'Or sign in with',
-                style:
-                    TextStyle(color: HexColor.fromHex('194170'), fontSize: 15),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildSocialButton(context,
-                        onTap: () {}, assetPath: Assets.icons.google.path),
-                    _buildSocialButton(context,
-                        onTap: () {}, assetPath: Assets.icons.facebook.path),
-                    _buildSocialButton(context,
-                        onTap: () {}, assetPath: Assets.icons.twitter.path),
-                    _buildSocialButton(context,
-                        onTap: () {}, assetPath: Assets.icons.linkedin.path)
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildLoginTitle(context),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              _buildRegisterPrompt(context)
-            ],
+                Form(
+                    key: _controller.formKey,
+                    child: Column(children: [
+                      AuthenticationTextField(
+                        editingController: _controller.usernameTextController,
+                        validator: _controller.validateUsername,
+                        labelText: 'Username',
+                        icon: Icon(Icons.person_outline,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      AuthenticationTextField(
+                        editingController: _controller.passwordTextController,
+                        validator: _controller.validatePassword,
+                        labelText: 'Password',
+                        obscureText: true,
+                        icon: Icon(Icons.lock_outline,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ])),
+                _buildForgetPasswordText(context),
+                _buildLoginButton(context),
+                Text(
+                  'Or sign in with',
+                  style: TextStyle(
+                      color: HexColor.fromHex('194170'), fontSize: 15),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSocialButton(context,
+                          onTap: () {}, assetPath: Assets.icons.google.path),
+                      _buildSocialButton(context,
+                          onTap: () {}, assetPath: Assets.icons.facebook.path),
+                      _buildSocialButton(context,
+                          onTap: () {}, assetPath: Assets.icons.twitter.path),
+                      _buildSocialButton(context,
+                          onTap: () {}, assetPath: Assets.icons.linkedin.path)
+                    ],
+                  ),
+                ),
+                _buildRegisterPrompt(context)
+              ],
+            ),
           ),
         ),
       ),
