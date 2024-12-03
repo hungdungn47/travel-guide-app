@@ -18,7 +18,11 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: _buildUI(context),
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: _buildUI(context)),
     );
   }
 
@@ -28,52 +32,54 @@ class RegisterPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildRegisterTitle(context),
-              const SizedBox(
-                height: 10,
-              ),
-              Form(
-                  key: _controller.formKey,
-                  child: Column(children: [
-                    AuthenticationTextField(
-                      editingController: _controller.usernameTextController,
-                      validator: _controller.validateUsername,
-                      labelText: 'Username',
-                      icon: Icon(Icons.person_outline,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    AuthenticationTextField(
-                      editingController: _controller.emailTextController,
-                      validator: _controller.validateEmail,
-                      labelText: 'Email',
-                      icon: Icon(Icons.email_outlined,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    AuthenticationTextField(
-                      editingController: _controller.passwordTextController,
-                      validator: _controller.validatePassword,
-                      labelText: 'Password',
-                      obscureText: true,
-                      icon: Icon(Icons.lock_outline,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    AuthenticationTextField(
-                      editingController:
-                          _controller.passwordConfirmationTextController,
-                      validator: _controller.validateConfirmationPassword,
-                      labelText: 'Confirm password',
-                      obscureText: true,
-                      icon: Icon(Icons.lock_outline,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                  ])),
-              _buildRegisterButton(context),
-              _buildLoginPrompt(context)
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildRegisterTitle(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                Form(
+                    key: _controller.formKey,
+                    child: Column(children: [
+                      AuthenticationTextField(
+                        editingController: _controller.usernameTextController,
+                        validator: _controller.validateUsername,
+                        labelText: 'Username',
+                        icon: Icon(Icons.person_outline,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      AuthenticationTextField(
+                        editingController: _controller.emailTextController,
+                        validator: _controller.validateEmail,
+                        labelText: 'Email',
+                        icon: Icon(Icons.email_outlined,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      AuthenticationTextField(
+                        editingController: _controller.passwordTextController,
+                        validator: _controller.validatePassword,
+                        labelText: 'Password',
+                        obscureText: true,
+                        icon: Icon(Icons.lock_outline,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      AuthenticationTextField(
+                        editingController:
+                            _controller.passwordConfirmationTextController,
+                        validator: _controller.validateConfirmationPassword,
+                        labelText: 'Confirm password',
+                        obscureText: true,
+                        icon: Icon(Icons.lock_outline,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ])),
+                _buildRegisterButton(context),
+                _buildLoginPrompt(context)
+              ],
+            ),
           ),
         ),
       ),
