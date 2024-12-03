@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travel_guide_app/main.dart';
 import 'package:travel_guide_app/presentation/controllers/profile_controller.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/ForgetPassword/forget_password_page.dart';
 import 'package:travel_guide_app/presentation/screens/Authentication/Login/login_page.dart';
@@ -96,16 +97,7 @@ class Username extends StatefulWidget {
 }
 
 class _UsernameState extends State<Username> {
-  bool isEditing = false;
-  // TextEditingController _controller = TextEditingController();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller.text = 'Sarasa Saionji';
-  // }
-
-  final ProfilePageController _controller = Get.put(ProfilePageController());  
+  final ProfilePageController _controller = Get.put(ProfilePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -116,19 +108,21 @@ class _UsernameState extends State<Username> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            isEditing
+            _controller.isEditing.value
                 ? Container(
                     width: 200,
-                    child: TextField(
-                      // controller: _controller,
-                      autofocus: true,
-                      onSubmitted: (value) async {
-                        await _controller.editUsername(value, '');
-                        showSnackBar(context, "Username changed successfully");
-                      },
-                      onChanged: (value) {
-                        textFieldValue = value;
-                      },
+                    child: Form(
+                      key: _controller.formKey,
+                      child: TextFormField(
+                        autofocus: true,
+                        validator: _controller.validateUsername,
+                        onFieldSubmitted: (value) async {
+                          await _controller.editUsername(value, '', context);
+                        },
+                        onChanged: (value) {
+                          textFieldValue = value;
+                        },
+                      ),
                     ),
                   )
                 : Container(
@@ -141,14 +135,13 @@ class _UsernameState extends State<Username> {
                     ),
                 ),
             IconButton(
-              icon: Icon(isEditing ? Icons.check : Icons.edit),
+              icon: Icon(_controller.isEditing.value ? Icons.check : Icons.edit),
               onPressed: () async {
-                setState(() {
-                  isEditing = !isEditing;
-                });
-                if (!isEditing) {
-                  await _controller.editUsername(textFieldValue, '');
-                  showSnackBar(context, "Username changed successfully");
+                if(!_controller.isEditing.value) {
+                  _controller.isEditing.value = true;
+                }
+                if (_controller.isEditing.value) {
+                  await _controller.editUsername(textFieldValue, '', context);
                 }
               },
             ),
@@ -168,7 +161,6 @@ void showSnackBar(BuildContext context, String message) {
 }
 
 
-// CHON THEME MODE CHO UNG DUNG
 enum ThemeModeOption { light, dark, system }
 
 class SetTheme extends StatefulWidget {
@@ -243,7 +235,6 @@ class ChangePasswordButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton(
       onPressed: () {
-        // TODO: Navigate to change password page
         HelperFunctions.navigateToScreen(screen: ForgetPasswordPage());
       },
       child: Text('Change Password'),
@@ -259,14 +250,13 @@ class LogoutButton extends StatelessWidget {
     return FilledButton(
       child: Text('Logout'),
       onPressed: () {
-        // TODO: Show logout dialog
         showDialog(
           context: context,
           builder: (context) {
             return LogoutDialog();
           },
         );
-        
+
       },
     );
   }
@@ -289,7 +279,6 @@ class LogoutDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            // TODO: Navigate to login page
             HelperFunctions.navigateToScreen(screen: LoginPage());
           },
           child: Text('Logout'),
