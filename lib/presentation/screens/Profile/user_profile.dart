@@ -263,7 +263,8 @@ class LogoutButton extends StatelessWidget {
 }
 
 class LogoutDialog extends StatelessWidget {
-  const LogoutDialog({Key? key}) : super(key: key);
+  final ProfilePageController _controller = Get.put(ProfilePageController());
+   LogoutDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -278,8 +279,9 @@ class LogoutDialog extends StatelessWidget {
           child: Text('Cancel'),
         ),
         TextButton(
-          onPressed: () {
-            HelperFunctions.navigateToScreen(screen: LoginPage());
+          onPressed: () async {
+            // HelperFunctions.navigateToScreen(screen: LoginPage());
+            await _controller.logout();
           },
           child: Text('Logout'),
         ),

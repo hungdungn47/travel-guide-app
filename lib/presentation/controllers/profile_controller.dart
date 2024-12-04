@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:travel_guide_app/networking/api/api_service.dart';
 import 'package:travel_guide_app/presentation/screens/Profile/user_profile.dart';
+import 'package:travel_guide_app/utils/index.dart';
 import 'package:travel_guide_app/utils/sl.dart';
 
 class ProfilePageController extends GetxController {
   final apiService = sl.get<ApiService>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final localStorage = LocalStorage();
 
   var name = ''.obs;
   var isEditing = false.obs;
@@ -50,5 +52,10 @@ class ProfilePageController extends GetxController {
     } catch (e) {
       print("Error editing username: $e");
     }
+  }
+
+  Future<void> logout() async {
+    await localStorage.removeData('accessToken');
+    HelperFunctions.navigateToLoginPage();
   }
 }
