@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_transition_mixin.dart';
 import 'package:travel_guide_app/main.dart';
 import 'package:travel_guide_app/models/Destination.dart';
+import 'package:travel_guide_app/presentation/controllers/favorite_destinations_controller.dart';
 import 'package:travel_guide_app/presentation/controllers/search_controller.dart';
 import 'package:travel_guide_app/presentation/screens/DestinationDetails/destination_details_page.dart';
 import 'package:travel_guide_app/utils/helper_functions.dart';
@@ -25,8 +26,7 @@ class SearchPage extends StatelessWidget {
         centerTitle: true,
         title: Text('Search'),
       ),
-      body: Obx(
-        () => Column(
+      body: Column(
           children: [
             CustomSearchBar(searchPageController: _controller,),
             const Padding(
@@ -37,7 +37,7 @@ class SearchPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
+              child: Obx(() => _controller.searchResults.isNotEmpty ? SingleChildScrollView(
                 child: Column(
                   children: [
                     // Display search results
@@ -45,11 +45,24 @@ class SearchPage extends StatelessWidget {
                       DestinationCard(destination: destination),
                   ],
                 ),
-              ),
+              ) : Column(
+
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/icons/empty_icon.png',
+                    height: 200,
+                    width: 300,
+                  ),
+                  Text(
+                    'There is no destinations as you wish',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ],
+              ),),
             )
           ],
         ),
-      ),
     );
   }
 }
@@ -65,10 +78,11 @@ class DestinationCard extends StatefulWidget {
 }
 
 class _DestinationCardState extends State<DestinationCard> {
-  bool isFavorite = false;
+  final FavoriteDestinationsController _favoriteDestinationsController = Get.find<FavoriteDestinationsController>();
 
   @override
   Widget build(BuildContext context) {
+    bool isFavorite = _favoriteDestinationsController.isFavorite(widget.destination);
     return GestureDetector(
       onTap: () {
         // TODO: Navigate to the actual destination details page (State management)
@@ -115,22 +129,15 @@ class _DestinationCardState extends State<DestinationCard> {
                     SizedBox(height: 10),
                     // Icon(Icons.favorite_border)
                     GestureDetector(
-                      child: (isFavorite)
-                          ? Icon(Icons.favorite, color: Colors.red)
-                          : Icon(Icons.favorite_border),
-                      onTap: () => {
-                        setState(() {
-                          isFavorite = !isFavorite;
-                        }),
-                        if (isFavorite)
-                          {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Added to favorite'),
-                                duration: Duration(seconds: 1),
-                              ),
-                            )
-                          }
+                      child: Obx(() => (_favoriteDestinationsController.isFavorite(widget.destination))
+                          ? const Icon(Icons.favorite, color: Colors.red)
+                          : const Icon(Icons.favorite_border),),
+                      onTap: () {
+                        if(!_favoriteDestinationsController.isFavorite(widget.destination)) {
+                          _favoriteDestinationsController.addFavoriteDestination(widget.destination);
+                        } else {
+                          _favoriteDestinationsController.removeFavoriteDestination(widget.destination);
+                        }
                       },
                     )
                   ],
