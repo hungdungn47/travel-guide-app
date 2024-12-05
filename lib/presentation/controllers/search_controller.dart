@@ -7,6 +7,8 @@ class SearchPageController extends GetxController{
   final apiService = sl.get<ApiService>();
 
   var searchResults = <Destination>[].obs;
+  var selectedDestinationType = ''.obs;
+  var selectedCity = ''.obs;
 
   @override
   void onInit() {
@@ -14,9 +16,21 @@ class SearchPageController extends GetxController{
     fetchSearchResults();
   }
 
+  void changeDestinationType(String type) {
+    selectedDestinationType.value = type;
+    filterSearchResults();
+  }
+
+  void changeCity(String city) {
+    selectedCity.value = city;
+    filterSearchResults();
+  }
+
   Future<void> fetchSearchResults() async {
     try {
+      print('Fetching search Results');
       final destinations = await apiService.getAllDestinations();
+      print('All destinations: ${destinations}');
       changeSearchResults(destinations);
     } catch (e) {
       print("Error fetching search results: $e");
@@ -28,9 +42,13 @@ class SearchPageController extends GetxController{
     searchResults.assignAll(destinations);
   }
 
-  Future<void> filterSearchResults(String type, String city, String ratingRange) async {
+  Future<void> filterSearchResults({String? type, String? city, String? ratingRange}) async {
     try {
-      final destinations = await apiService.filterDestinations(type: type, city: city, ratingRange: ratingRange);
+      print('Type ${selectedDestinationType.value}');
+      print('City ${selectedCity.value}');
+      final destinations = await apiService.filterDestinations(
+          type: selectedDestinationType.value != '' ? selectedDestinationType.value : null,
+          city: selectedCity.value != '' && selectedCity.value != 'Any city' ? selectedCity.value : null);
       changeSearchResults(destinations);
     } catch (e) {
       print("Error fetching search results: $e");

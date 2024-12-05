@@ -39,6 +39,7 @@ class FavoriteDestinationsController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.white,
       margin: const EdgeInsets.only(bottom: 80),
+      duration: const Duration(milliseconds: 800),
       overlayBlur: 2,
       // dismissDirection: DismissDirection.down
     );
@@ -54,6 +55,7 @@ class FavoriteDestinationsController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.white,
       overlayBlur: 2,
+      duration: const Duration(milliseconds: 800),
       margin: const EdgeInsets.only(bottom: 80),
       // dismissDirection: DismissDirection.down
     );

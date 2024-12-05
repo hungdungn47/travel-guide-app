@@ -44,8 +44,6 @@ class FavoriteDestinationsPage extends StatelessWidget {
             } else if (snapshot.connectionState == ConnectionState.done) {
               return Obx(() {
                 if (_controller.favoriteDestinations.isNotEmpty) {
-                  print(
-                      'In favorite des page: ${_controller.favoriteDestinations}');
                   if (_controller.isViewModeCarousel.value) {
                     return favoriteDestinationCarouselView(context);
                   } else {
