@@ -57,9 +57,7 @@ class CustomSearchBar extends StatelessWidget {
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
-                            return BottomModalMenu(
-                              controller: searchPageController,
-                            );
+                            return BottomModalMenu();
                           },
                           showDragHandle: true);
                     },

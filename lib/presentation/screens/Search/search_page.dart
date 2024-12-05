@@ -14,7 +14,7 @@ import '../../components/search_bar.dart';
 class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
 
-  final SearchPageController _controller = Get.find<SearchPageController>();
+  final SearchPageController _controller = Get.put(SearchPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -151,133 +151,81 @@ class _DestinationCardState extends State<DestinationCard> {
   }
 }
 
-class BottomModalMenu extends StatefulWidget {
-  BottomModalMenu({super.key, required this.controller});
-
-  SearchPageController controller;
-
-  @override
-  State<BottomModalMenu> createState() => _BottomModalMenuState();
-}
-
-class _BottomModalMenuState extends State<BottomModalMenu> {
-  bool isCulture = false;
-  bool isLeisure = false;
-  bool isAdventure = false;
-  String city = 'Hanoi';
+class BottomModalMenu extends StatelessWidget {
+  final SearchPageController controller = Get.find<SearchPageController>();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  'Filter',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'City/Province:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                DropdownBox(
-                  title: city,
-                  options: ['Hanoi', 'HCMC', 'Da Nang', 'Hue'],
-                  onSelected: (value) {
-                    setState(() {
-                      city = value;
-                    });
-                  },
-                ),
-                Text(
-                  'Type of Travel:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(child: Text('Cultrue & History')),
-                        Checkbox(
-                            value: isCulture,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isCulture = value!;
-                              });
-                            }),
-                      ],
-                    )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      Expanded(child: Text('Leisure & Relaxation')),
-                      Checkbox(
-                          value: isLeisure,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isLeisure = value!;
-                            });
-                          }),
-                    ],
-                  ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(child: Text('Adventure')),
-                        Checkbox(
-                            value: isAdventure,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isAdventure = value!;
-                              });
-                            }),
-                      ],
-                    )),
-                ElevatedButton(
-                  onPressed: () {
-                    widget.controller.fetchSearchResults();
-                    Navigator.pop(context);
-                  },
-                  child: Text('Apply',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                ),
-              ],
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Filter',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
+            const SizedBox(height: 16),
+            const Text(
+              'City',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            DropdownBox(
+                options: ['Ninh Binh', 'Kien Giang', 'Lao Cai', 'Hue', 'Quang Nam', 'Any city'],),
+            const SizedBox(height: 8),
+            const Text(
+              'Type of destination',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            _buildCheckboxRow('CULTURAL'),
+            _buildCheckboxRow('NATURAL')
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCheckboxRow(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          Obx(() => Checkbox(
+            value: controller.selectedDestinationType.value == label,
+            onChanged: (bool? value) {
+              if (value == true) {
+                controller.changeDestinationType(label);
+              } else {
+                controller.changeDestinationType('');
+              }
+            },
+          )),
+        ],
+      ),
     );
   }
 }
 
-class DropdownBox extends StatefulWidget {
-  final String title;
-  final List<String> options;
-  final Function(String) onSelected;
 
-  const DropdownBox({
+class DropdownBox extends StatelessWidget {
+  final List<String> options;
+
+  DropdownBox({
     Key? key,
-    required this.title,
-    required this.options,
-    required this.onSelected,
+    required this.options
   }) : super(key: key);
 
-  @override
-  _DropdownBoxState createState() => _DropdownBoxState();
-}
-
-class _DropdownBoxState extends State<DropdownBox> {
-  String? selectedValue;
+  final SearchPageController controller = Get.find<SearchPageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -290,15 +238,12 @@ class _DropdownBoxState extends State<DropdownBox> {
               child: Material(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: widget.options.length,
+                  itemCount: options.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(widget.options[index]),
+                      title: Text(options[index]),
                       onTap: () {
-                        setState(() {
-                          selectedValue = widget.options[index];
-                        });
-                        widget.onSelected(widget.options[index]);
+                        controller.changeCity(options[index]);
                         Navigator.pop(context);
                       },
                     );
@@ -320,7 +265,7 @@ class _DropdownBoxState extends State<DropdownBox> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(selectedValue ?? widget.title),
+              Obx(() => Text(controller.selectedCity.value != '' ? controller.selectedCity.value : 'Any city')),
               Icon(Icons.arrow_drop_down),
             ],
           ),
